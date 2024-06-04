@@ -1,45 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
-import {Evenement} from "../components/evenement";
+import { Text, View, Image } from 'react-native';
+import { Redirect,router } from "expo-router";
+import { ButtonHome } from "../components/buttonHome";
 
-export default function index() {
+export default function App() {
     return (
-        <SafeAreaView className={"flex-1"}>
-            <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
-                <View className={"flex-1 justify-center"}>
-                    <Evenement
-                        title={"Cours de Halakha Makhome"}
-                        image={require("../assets/images/fleg.jpg")}
-                        logoAsso={require("../assets/images/MakhomeLogo.jpg")}
-                        rabbin={"Rav Binyamin Smadja"}
-                        publicAgeMin={"18"}
-                        publicAgeMax={"35"}
-                        publicSexe={"Homme"}
-                    />
-                    <Evenement
-                        title={"Cours de Halakha Makhome"}
-                        image={require("../assets/images/chabath.jpg")}
-                        logoAsso={require("../assets/images/MakhomeLogo.jpg")}
-                        rabbin={"Rav Binyamin Smadja"}
-                        publicAgeMin={"18"}
-                        publicAgeMax={"35"}
-                        publicSexe={"Homme"}
+        <View className={"flex-1 items-center justify-center"}>
+            <Image
+                className={"w-40 h-40 mb-10"}
 
-                    />
-                    <StatusBar style="auto" />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                source={require('../assets/images/x-logo.png')}
+            />
+            <Text className={"text-6xl mb-10"}>JEvents</Text>
 
+            <ButtonHome
+                title={"Connexion"}
+                handlePress={() => router.push('/sign-in')}
+            />
+
+            <ButtonHome
+                title={"Inscription"}
+                handlePress={() => router.push('/sign-up')}
+            />
+        </View>
     );
 }
-//
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         marginHorizontal: 20,
-//         marginVertical: 20,
-//         backgroundColor: '#fff',
-//         justifyContent: 'center',
-//     },
-// });

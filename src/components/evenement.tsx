@@ -15,7 +15,7 @@ export const Evenement = ({
                               publicAgeMin, publicAgeMax
                             }: EvenementProps) => {
     return (
-        <View className={"flex-1 flex-row align-middle m-5 p-3 bg-white rounded-lg"} style={{elevation:5}}>
+        <View className={"flex-1 flex-row items-center m-5 p-3 bg-white rounded-lg"} style={{elevation:5}}>
             <Image
                 resizeMode="contain"
                 className={"border-2"}
