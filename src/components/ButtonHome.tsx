@@ -1,5 +1,5 @@
-import {EvenementProps} from "./evenement";
-import {Button, Image, ImageSourcePropType, Pressable, Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, View} from "react-native";
+
 
 export type ButtonProps = {
     title: string,

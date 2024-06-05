@@ -1,8 +1,9 @@
-import { Text, View, Image } from 'react-native';
-import { Redirect,router } from "expo-router";
-import { ButtonHome } from "../components/buttonHome";
+import {Text, View, Image } from 'react-native';
+import {Redirect, router} from "expo-router";
+import { ButtonHome } from "../components/ButtonHome";
 
 export default function App() {
+
     return (
         <View className={"flex-1 items-center justify-center"}>
             <Image
@@ -10,7 +11,7 @@ export default function App() {
 
                 source={require('../assets/images/x-logo.png')}
             />
-            <Text className={"text-6xl mb-10"}>JEvents</Text>
+            <Text className={"text-6xl m-10 p-1 text-center font-"}>JEvents</Text>
 
             <ButtonHome
                 title={"Connexion"}

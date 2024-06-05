@@ -1,5 +1,7 @@
 import { Stack, Tabs } from 'expo-router'
 
 export default function Layout() {
-    return <Stack />
+    return <Stack screenOptions={{
+        animation:'slide_from_left',
+    }}/>
 }
