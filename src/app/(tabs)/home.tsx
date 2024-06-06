@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import {Text, SafeAreaView, ScrollView, View} from 'react-native';
 import {Evenement} from "../../components/Evenement";
-import {router} from "expo-router";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 // import { Text} from "../../components/Text";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import { useRouter } from "expo-router";
 
 
 const dateEvent =
@@ -71,7 +71,7 @@ const dateEvent =
             id: 6,
             title: "Cours de Halakha Makhome",
             nomAsso: "Makhome",
-            image: require("../../assets/images/fleg.jpg"),
+            image: require("../../assets/images/chabath.jpg"),
             logoAsso: require("../../assets/images/MakhomeLogo.jpg"),
             rabbin: "Rav Binyamin Smadja",
             publicSexe: "Homme",
@@ -82,6 +82,7 @@ const dateEvent =
 
 
 export default function index() {
+    const router = useRouter();
     return (
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
@@ -95,7 +96,13 @@ export default function index() {
                                         <Evenement
                                             key={evenement.id}
                                             evenement={evenement}
-                                            handlePress={() => router.push('/eventView')}
+                                            handlePress={() =>
+                                                router.navigate({
+                                                    pathname: '/eventView',
+                                                    params: { date: date.date, evenement: JSON.stringify(evenement) },
+
+                                                })
+                                            }
                                         />
                                     )
                                 })}
