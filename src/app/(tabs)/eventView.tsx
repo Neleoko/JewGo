@@ -1,7 +1,7 @@
-import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, Linking, Platform} from "react-native";
-import React from "react";
+import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, Linking, Platform, Modal} from "react-native";
+import React, {useState} from "react";
 import { Entypo } from '@expo/vector-icons';
-import {useLocalSearchParams} from "expo-router";
+import {router, useLocalSearchParams} from "expo-router";
 import {ButtonHome} from "../../components/ButtonHome";
 
 
@@ -29,12 +29,16 @@ export default function eventView() {
                         <Text className={"text-3xl text-center"}>19h25</Text>
                     </View>
                     <View className={"items-center"}>
-                        <Image
-                            className={"border-2"}
-                            style={{width: 350, height: 325}}
-                            resizeMode={"contain"}
-                            source={evenement.image}
-                        />
+                        {/*<TouchableOpacity onPress={() => router.navigate({*/}
+                        {/*    pathname: '/imageView',*/}
+                        {/*}) }>*/}
+                            <Image
+                                className={"border-2"}
+                                style={{width: 350, height: 325}}
+                                resizeMode={"contain"}
+                                source={evenement.image}
+                            />
+                        {/*</TouchableOpacity>*/}
                     </View>
                     <View className={"flex-row flex-wrap justify-center"}>
                         <View className={"rounded-3xl bg-gray-800 mx-1 mt-3 items-center"}>

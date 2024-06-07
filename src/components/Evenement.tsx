@@ -1,4 +1,4 @@
-import {Button, Image, ImageSourcePropType, Text, TouchableOpacity, View} from "react-native";
+import {Button, Image, ImageSourcePropType, Modal, Text, TouchableOpacity, View} from "react-native";
 
 export type EvenementProps = {
     evenement: {
@@ -15,36 +15,36 @@ export type EvenementProps = {
     handlePress?: () => void
 }
 
-export const Evenement = (props: EvenementProps) => {
+export const Evenement = ({evenement, handlePress}: EvenementProps) => {
     return (
         <TouchableOpacity
-            className={"flex-1 flex-row items-center my-2 p-3 bg-white rounded-lg border-2"}
+            className={"flex-1 flex-row items-center my-2 p-3 bg-white rounded-lg"}
             style={{elevation: 5}}
             activeOpacity={0.8}
-            onPress={props.handlePress}
+            onPress={handlePress}
         >
             <Image
                 resizeMode="contain"
                 className={"border-2"}
                 style={{width: 120, height: 125}}
-                source={props.evenement.image}
+                source={evenement.image}
             />
             <View className={"flex-col flex-1 ml-2"}>
                 <View className={"flex-row"}>
                     <View className={"flex-col flex-1"}>
-                        <Text className={"font-semibold text-xl"}>{props.evenement.title}</Text>
-                        <Text className={"font-medium text-l"}>{props.evenement.rabbin}</Text>
+                        <Text className={"font-semibold text-xl"}>{evenement.title}</Text>
+                        <Text className={"font-medium text-l"}>{evenement.rabbin}</Text>
                     </View>
                     <View>
                         <Image
                             className={"w-10 h-10 rounded-md"}
-                            source={props.evenement.logoAsso}
+                            source={evenement.logoAsso}
                         />
                     </View>
                 </View>
                 <View className={"flex-row pt-5"}>
                     <Text className={"font-medium"}>Public
-                        : {props.evenement.publicSexe} - {props.evenement.publicAgeMin} à {props.evenement.publicAgeMax} ans</Text>
+                        : {evenement.publicSexe} - {evenement.publicAgeMin} à {evenement.publicAgeMax} ans</Text>
                 </View>
                 <View>
 

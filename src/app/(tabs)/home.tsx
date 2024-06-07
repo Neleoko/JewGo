@@ -86,7 +86,7 @@ export default function index() {
     return (
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
-                <View className={"flex-1 justify-center m-5 border-2"}>
+                <View className={"flex-1 justify-center m-5"}>
                     {dateEvent.map((date) => {
                         return (
                             <View key={date.date}>
