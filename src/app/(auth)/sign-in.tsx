@@ -1,16 +1,19 @@
-import {View, Text} from "react-native";
+import {View, Text, SafeAreaView} from "react-native";
 import React from "react";
 import {router} from "expo-router";
-import {ButtonHome} from "../../components/ButtonHome";
+import {ButtonCustom} from "../../components/ButtonCustom";
 
 export default function SignIn() {
     return (
-        <View>
-            <Text>Sign In</Text>
-            <ButtonHome
-                title={"Connexion"}
-                handlePress={() => router.push('/home')}
-            />
-        </View>
+        <SafeAreaView className={"flex-1 items-center"}>
+            <View>
+                <Text>Sign In</Text>
+                <ButtonCustom
+                    title={"Connexion"}
+                    handlePress={() => router.push('/home')}
+                />
+            </View>
+        </SafeAreaView>
+
     )
 }

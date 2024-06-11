@@ -1,14 +1,25 @@
-import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, Linking, Platform, Modal} from "react-native";
-import React, {useState} from "react";
+import {
+    View,
+    Text,
+    SafeAreaView,
+    ScrollView,
+    Image,
+    Linking,
+    Platform,
+} from "react-native";
+import React from "react";
 import { Entypo } from '@expo/vector-icons';
-import {router, useLocalSearchParams} from "expo-router";
-import {ButtonHome} from "../../components/ButtonHome";
+import {useLocalSearchParams} from "expo-router";
+import {ButtonCustom} from "../../components/ButtonCustom";
+import {Categorie} from "../../components/Categorie";
 
 
 export default function eventView() {
     const params = useLocalSearchParams();
     const evenement = JSON.parse(params.evenement as string)
-
+    const onShare = async () => {
+        alert("Share")
+    }
     const  linkMaps = () => {
         const address = "3 rue de la paix 75000 Paris"
         const url = Platform.select({
@@ -21,8 +32,10 @@ export default function eventView() {
     return (
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
-                <View className={"flex-1 justify-center m-5 rounded-lg bg-white p-3 flex-col border-2 border-gray-400"}>
-                    <Entypo name="share" size={24} color="black" className={"items-end"} />
+                <View className={"flex-1 justify-center m-5 rounded-lg bg-white p-3 flex-col border-2"} style={{borderColor: "#08238550"}}>
+                    <View className={"items-end my-2 mr-2"}>
+                        <Entypo name="share" size={24} color="black" onPress={onShare} />
+                    </View>
                     <View className={"items-center mb-5"}>
                         <Text className={"text-4xl font-bold text-center mb-1"}>{evenement.title}</Text>
                         <Text className={"text-3xl font-bold text-center"}>{params.date}</Text>
@@ -41,36 +54,20 @@ export default function eventView() {
                         {/*</TouchableOpacity>*/}
                     </View>
                     <View className={"flex-row flex-wrap justify-center"}>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3 items-center"}>
-                            <Text className={"text-white px-4 py-1"}>Shabbat</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>Shabbat</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>Shabbat</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
-                        <View className={"rounded-3xl bg-gray-800 mx-1 mt-3"}>
-                            <Text className={"text-white px-4 py-1"}>AfterWork</Text>
-                        </View>
+                        <Categorie title={"Shabbath"}/>
+                        <Categorie title={"Cacher"}/>
+                        <Categorie title={"Cuisine"}/>
+                        <Categorie title={"AfterWork"}/>
+                        <Categorie title={"Cours"}/>
+                        <Categorie title={"Shabbath"}/>
+                        <Categorie title={"Cacher"}/>
+                        <Categorie title={"Cuisine"}/>
+                        <Categorie title={"AfterWork"}/>
+
+
                     </View>
                     <View className={"m-4"}>
-                        <Text className={"text-center text-lg"}>
+                        <Text className={"text-lg"}>
                             Hello les ami(e)s voici les informations du 3×45 de ce jeudi 6 juin avec le partenariat exceptionnel de Olami saint-mandé 🥳🥳🥳
                             exceptionnellement le jeudi{"\n"}
                             {"\n"}
@@ -105,14 +102,15 @@ export default function eventView() {
                             </Text>
                         </View>
                     </View>
-                    <View className={"my-5 mx-10"}>
-                        <ButtonHome title={'S\'inscrire'} handlePress={async () => {
-                            await Linking.openURL('https://www.google.com')
-                        }}
-                        />
-                    </View>
+                    <View className={"pb-20"} />
                 </View>
             </ScrollView>
+            <View className={"absolute bottom-0 w-full items-center justify-center mb-12"}>
+                <ButtonCustom title={'S\'inscrire'} handlePress={async () => {
+                    await Linking.openURL('https://www.google.com')
+                }}
+                />
+            </View>
         </SafeAreaView>
     )
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "606189063220",
+    "project_id": "jevents-30e18",
+    "storage_bucket": "jevents-30e18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606189063220:android:db12d8f9253b5f5b3f8e61",
+        "android_client_info": {
+          "package_name": "com.jevents.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFgVzaRsYm3_u_xmqztd4287TlnhjrH3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
