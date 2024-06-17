@@ -46,12 +46,6 @@ export const Evenement = ({evenement, handlePress}: EvenementProps) => {
                     <Text className={"font-medium"}>Public
                         : {evenement.publicSexe} - {evenement.publicAgeMin} à {evenement.publicAgeMax} ans</Text>
                 </View>
-                <View>
-
-                </View>
-                <View>
-                    <Text>STARS ⭐⭐⭐⭐⭐ </Text>
-                </View>
             </View>
 
         </TouchableOpacity>

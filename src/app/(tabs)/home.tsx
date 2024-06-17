@@ -3,9 +3,10 @@ import {Text, SafeAreaView, ScrollView, View} from 'react-native';
 import {Evenement} from "../../components/Evenement";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-// import { Text} from "../../components/Text";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import { useRouter } from "expo-router";
+import SwitchSelector from "react-native-switch-selector";
+import React from "react";
 
 
 const dateEvent =
@@ -80,13 +81,22 @@ const dateEvent =
         }],
     }]
 
-
 export default function index() {
     const router = useRouter();
+
+    const optionsButton = [
+        { label: 'Tout', value: '1' },
+        { label: 'Abonnement', value: '2' }
+    ];
+
+
     return (
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
                 <View className={"flex-1 justify-center m-5"}>
+                    <View className={"items-center mb-3"}>
+                        <SwitchSelector options={optionsButton} buttonColor={"#082385"} initial={0} />
+                    </View>
                     {dateEvent.map((date) => {
                         return (
                             <View key={date.date}>
