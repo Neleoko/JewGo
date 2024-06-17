@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.neleoko.jevents"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,6 +30,15 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "jevents"
+    "scheme": "jevents",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "06dd70cb-984d-4692-905b-8833297bd588"
+      }
+    },
+    "owner": "neleoko"
   }
 }
