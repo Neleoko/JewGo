@@ -31,7 +31,6 @@ export default function SearchBar() {
     };
 
     return (
-        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}>
         <View className={"flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md shadow-black border-2"} style={{borderColor: "#082385"}}>
             <TouchableOpacity className={"mr-2"}>
                 <Ionicons name="search" size={24} color="black" />
@@ -73,6 +72,5 @@ export default function SearchBar() {
 
             </Modal>
         </View>
-            </View>
     );
 }
