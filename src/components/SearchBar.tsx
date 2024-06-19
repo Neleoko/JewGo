@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, Text, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {ButtonCustom} from "./ButtonCustom";
 import SliderBar from './SliderBar';
-import Slider from "@react-native-community/slider";
+
 
 function Button(props: { onPress: () => void, title: string }) {
     return null;
@@ -46,18 +46,11 @@ export default function SearchBar() {
                 onRequestClose={toggleModal}
             >
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
-                    <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
+                    <View className={"bg-white p-4 border-2"}>
                         <Text>Filtre 1</Text>
                         <Text>Filtre 2</Text>
                         <Text>Filtre 3</Text>
-                        <Slider
-                            style={{width: 200, height: 40}}
-                            minimumValue={0}
-                            maximumValue={100}
-                            onValueChange={(value) => setValueSlider(value)}
-                            minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
-                        />
+
                         {/*<View className={"flex-row"}>*/}
                             {/*<ButtonCustom title="Fermer" handlePress={toggleModal}/>*/}
                             {/*<ButtonCustom title="Appliquer" handlePress={toggleModal}/>*/}
