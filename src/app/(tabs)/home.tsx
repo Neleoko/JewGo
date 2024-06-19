@@ -7,6 +7,7 @@ import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import { useRouter } from "expo-router";
 import SwitchSelector from "react-native-switch-selector";
 import React from "react";
+import SearchBar from "../../components/SearchBar";
 
 
 const dateEvent =
@@ -94,9 +95,10 @@ export default function index() {
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
                 <View className={"flex-1 justify-center m-5"}>
-                    <View className={"items-center mb-3"}>
+                    <View className={"items-center mb-1"}>
                         <SwitchSelector options={optionsButton} buttonColor={"#082385"} initial={0} />
                     </View>
+                    <SearchBar />
                     {dateEvent.map((date) => {
                         return (
                             <View key={date.date}>
