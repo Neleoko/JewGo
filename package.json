@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/metro-runtime": "~3.2.1",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-firebase/app": "^20.1.0",
     "@types/react": "~18.2.79",
     "date-fns": "^3.6.0",
