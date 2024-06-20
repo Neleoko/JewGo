@@ -14,7 +14,7 @@ import {ButtonCustom} from "../../components/ButtonCustom";
 import {Categorie} from "../../components/Categorie";
 
 
-export default function eventView() {
+export default function EventView() {
     const params = useLocalSearchParams();
     const evenement = JSON.parse(params.evenement as string)
     const onShare = async () => {

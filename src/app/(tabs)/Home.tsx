@@ -82,7 +82,7 @@ const dateEvent =
         }],
     }]
 
-export default function index() {
+export default function Home() {
     const router = useRouter();
 
     const optionsButton = [
@@ -92,7 +92,8 @@ export default function index() {
 
 
     return (
-        <SafeAreaView className={"flex-1"}>
+
+        <SafeAreaView className={"flex-1 border-6 border-cyan-400"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
                 <View className={"flex-1 justify-center m-5"}>
                     <View className={"items-center mb-1"}>
@@ -110,9 +111,8 @@ export default function index() {
                                             evenement={evenement}
                                             handlePress={() =>
                                                 router.navigate({
-                                                    pathname: '/eventView',
+                                                    pathname: '/(view)/EventView',
                                                     params: { date: date.date, evenement: JSON.stringify(evenement) },
-
                                                 })
                                             }
                                         />
@@ -121,7 +121,7 @@ export default function index() {
                             </View>
                         )
                     })}
-                    <StatusBar style="auto" />
+                    <StatusBar style="auto" backgroundColor={"#000"} />
                 </View>
             </ScrollView>
         </SafeAreaView>

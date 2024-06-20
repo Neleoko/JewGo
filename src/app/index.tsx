@@ -14,13 +14,13 @@ export default function App() {
             <View className={"my-8"}>
                 <ButtonCustom
                     title={"Connexion"}
-                    handlePress={() => router.push('/sign-in')}
+                    handlePress={() => router.push('/Sign-in')}
                 />
             </View>
             <View>
                 <ButtonCustom
                     title={"Inscription"}
-                    handlePress={() => router.push('/sign-up')}
+                    handlePress={() => router.push('/Sign-up')}
                 />
             </View>
         </View>

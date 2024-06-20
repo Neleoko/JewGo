@@ -5,6 +5,7 @@ import {ButtonCustom} from "./ButtonCustom";
 import SliderBarAge from './SliderBarAge';
 import { Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import Filter from "./Filter";
 
 function Button(props: { onPress: () => void, title: string }) {
     return null;
@@ -26,7 +27,6 @@ export default function SearchBar() {
     };
 
     const toggleModal = () => {
-        console.log("toggleModal");
         setModalVisible(!modalVisible);
     };
 
@@ -44,33 +44,7 @@ export default function SearchBar() {
             <TouchableOpacity onPress={toggleModal} className={"px-1"}>
                 <Ionicons name="filter" size={24} color="black" />
             </TouchableOpacity>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={toggleModal}
-            >
-                <View className={"bg-white p-7 flex-1"}>
-                    <View className={"flex-row justify-between"}>
-                        <Text className={"text-2xl font-bold"}>Filtres</Text>
-                        <TouchableOpacity onPress={toggleModal}>
-                            <Entypo name="cross" size={40} color="#082385" />
-                        </TouchableOpacity>
-                    </View>
-                    <SliderBarAge onValuesChange={(values) => console.log(values)} />
-
-
-                    <Text>Filtre 1</Text>
-                    <Text>Filtre 2</Text>
-                    <Text>Filtre 3</Text>
-
-                    {/*<View className={"flex-row"}>*/}
-                        {/*<ButtonCustom title="Fermer" handlePress={toggleModal}/>*/}
-                        {/*<ButtonCustom title="Appliquer" handlePress={toggleModal}/>*/}
-                    {/*</View>*/}
-                </View>
-
-            </Modal>
+            <Filter modalVisible={modalVisible} toggleModal={toggleModal} />
         </View>
     );
 }

@@ -3,16 +3,17 @@ import React from "react";
 import {router} from "expo-router";
 import {ButtonCustom} from "../../components/ButtonCustom";
 
-export default function signUp() {
+export default function SignIn() {
     return (
         <SafeAreaView className={"flex-1 items-center"}>
             <View>
-                <Text>Sign Up</Text>
+                <Text>Sign In</Text>
                 <ButtonCustom
                     title={"Connexion"}
-                    handlePress={() => router.push('/home')}
+                    handlePress={() => router.push('/Home')}
                 />
             </View>
         </SafeAreaView>
+
     )
 }
