@@ -5,18 +5,21 @@ import {
     ScrollView,
     Image,
     Linking,
-    Platform,
+    Platform, TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { Entypo } from '@expo/vector-icons';
 import {useLocalSearchParams} from "expo-router";
 import {ButtonCustom} from "../../components/ButtonCustom";
 import {Categorie} from "../../components/Categorie";
-
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function EventView() {
     const params = useLocalSearchParams();
     const evenement = JSON.parse(params.evenement as string)
+    const navigation = useNavigation();
+
     const onShare = async () => {
         alert("Share")
     }
@@ -33,7 +36,14 @@ export default function EventView() {
         <SafeAreaView className={"flex-1"}>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
                 <View className={"flex-1 justify-center m-5 rounded-lg bg-white p-3 flex-col border-2"} style={{borderColor: "#08238550"}}>
-                    <View className={"items-end my-2 mr-2"}>
+                    <View className={"flex-row justify-between my-2 mr-2"}>
+                        <TouchableOpacity
+                        onPress={() => {
+                            navigation.goBack()
+                        }}>
+                            <Ionicons name="arrow-back-outline" size={30} color="black" />
+                        </TouchableOpacity>
+
                         <Entypo name="share" size={24} color="black" onPress={onShare} />
                     </View>
                     <View className={"items-center mb-5"}>
