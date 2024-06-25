@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { View, TextInput, TouchableOpacity, Text, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {ButtonCustom} from "./ButtonCustom";
@@ -6,20 +6,19 @@ import SliderBarAge from './SliderBarAge';
 import { Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import Filter from "./Filter";
+import { StatusBarColorContext } from '../contexts/StatusBarColorContext';
 
-function Button(props: { onPress: () => void, title: string }) {
-    return null;
-}
 
 export default function SearchBar() {
     const [searchQuery, setSearchQuery] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [valueSlider, setValueSlider] = useState(0);
 
+    const { setStatusBarColor } = useContext(StatusBarColorContext);
+
 // Obtenez les dimensions de la fenêtre
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-
 
     const handleSearch = (query) => {
         setSearchQuery(query);
@@ -28,6 +27,11 @@ export default function SearchBar() {
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
+    };
+
+    const handleFilterButtonClick = () => {
+        setStatusBarColor('#FFFFFF');
+        toggleModal();
     };
 
     return (
@@ -41,10 +45,10 @@ export default function SearchBar() {
                 value={searchQuery}
                 onChangeText={handleSearch}
             />
-            <TouchableOpacity onPress={toggleModal} className={"px-1"}>
+            <TouchableOpacity onPress={handleFilterButtonClick} className={"px-1"}>
                 <Ionicons name="filter" size={24} color="black" />
             </TouchableOpacity>
-            <Filter modalVisible={modalVisible} toggleModal={toggleModal} />
+            <Filter modalVisible={modalVisible} toggleModal={toggleModal} setStatusBarColor={setStatusBarColor}/>
         </View>
     );
 }
