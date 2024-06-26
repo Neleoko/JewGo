@@ -30,7 +30,13 @@ export default function SearchBar() {
     };
 
     const handleFilterButtonClick = () => {
-        setStatusBarColor('#FFFFFF');
+        if (modalVisible) {
+            setStatusBarColor('#F4F4F9');
+            console.log("Fermeture du modal");
+        } else {
+            setStatusBarColor('#FFFFFF');
+            console.log("Ouverture du modal");
+        }
         toggleModal();
     };
 
@@ -48,7 +54,7 @@ export default function SearchBar() {
             <TouchableOpacity onPress={handleFilterButtonClick} className={"px-1"}>
                 <Ionicons name="filter" size={24} color="black" />
             </TouchableOpacity>
-            <Filter modalVisible={modalVisible} toggleModal={toggleModal} setStatusBarColor={setStatusBarColor}/>
+            <Filter modalVisible={modalVisible} handleFilterButtonClick={handleFilterButtonClick} setStatusBarColor={setStatusBarColor}/>
         </View>
     );
 }

@@ -14,6 +14,7 @@ import {ButtonCustom} from "../../components/ButtonCustom";
 import {Categorie} from "../../components/Categorie";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import {StatusBar} from "expo-status-bar";
 
 export default function EventView() {
     const params = useLocalSearchParams();
@@ -34,6 +35,7 @@ export default function EventView() {
 
     return (
         <SafeAreaView className={"flex-1"}>
+            <StatusBar backgroundColor={"#F4F4F9"} style={"dark"}/>
             <ScrollView className={"flex-1"} style={{backgroundColor:"#F4F4F9"}}>
                 <View className={"flex-1 justify-center m-5 rounded-lg bg-white p-3 flex-col border-2"} style={{borderColor: "#08238550"}}>
                     <View className={"flex-row justify-between my-2 mr-2"}>
