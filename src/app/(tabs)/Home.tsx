@@ -6,9 +6,11 @@ import { fr } from "date-fns/locale";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import { useRouter } from "expo-router";
 import SwitchSelector from "react-native-switch-selector";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SearchBar from "../../components/SearchBar";
 import { StatusBarColorContext } from '../../contexts/StatusBarColorContext';
+import firebase from "firebase/compat";
+import firestore = firebase.firestore;
 
 
 const dateEvent =
@@ -86,7 +88,14 @@ const dateEvent =
 export default function Home() {
     const router = useRouter();
 
+    // const [dateEvent, setDateEvent] = useState([])
     const [statusBarColor, setStatusBarColor] = useState('#F4F4F9');
+
+    // useEffect(() => {
+    //     const getEvent = async () => {
+    //         const eventCollection = collection(firestore, 'event');
+    //     }
+    // }, []);
 
     const optionsButton = [
         { label: 'Tout', value: '1' },
