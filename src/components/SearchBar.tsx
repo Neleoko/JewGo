@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import Filter from "./Filter";
 import { StatusBarColorContext } from '../contexts/StatusBarColorContext';
+import {ThemeContext} from "../contexts/ThemeContext";
 
 
 export default function SearchBar() {
@@ -15,7 +16,7 @@ export default function SearchBar() {
     const [valueSlider, setValueSlider] = useState(0);
 
     const { setStatusBarColor } = useContext(StatusBarColorContext);
-
+    const themeContextValue = useContext(ThemeContext);
 // Obtenez les dimensions de la fenêtre
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -41,7 +42,7 @@ export default function SearchBar() {
     };
 
     return (
-        <View className={"flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md shadow-black border-2"} style={{borderColor: "#082385"}}>
+        <View className={"flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md shadow-black border-2"} style={{borderColor: themeContextValue.secondaryColor}}>
             <TouchableOpacity className={"mr-2"}>
                 <Ionicons name="search" size={24} color="black" />
             </TouchableOpacity>

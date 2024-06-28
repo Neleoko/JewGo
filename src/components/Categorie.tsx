@@ -1,5 +1,6 @@
-import React, { useState, ComponentType } from 'react';
+import React, {useState, ComponentType, useContext} from 'react';
 import {Text, TouchableOpacity, View} from "react-native";
+import {ThemeContext} from "../contexts/ThemeContext";
 
 export type ButtonProps = {
     title: string,
@@ -9,7 +10,7 @@ export type ButtonProps = {
 
 export const Categorie = ({title,isClickable = false, onSelect}: ButtonProps) => {
     const [isSelected, setIsSelected] = useState(false);
-
+    const themeContextValue = useContext(ThemeContext);
     const handlePress = () => {
         setIsSelected(!isSelected);
         onSelect && onSelect(title); // Vérifier si onSelect existe avant de l'appeler
@@ -20,10 +21,10 @@ export const Categorie = ({title,isClickable = false, onSelect}: ButtonProps) =>
     return (
         <Component onPress={isClickable ? handlePress : undefined}>
             <View
-                className={"rounded-2xl mx-1 mt-3 items-center border-2"}
+                className={`rounded-2xl mx-1 mt-3 items-center border-2`}
                 style={{
-                    backgroundColor: isSelected ? '#082385' : '#FFFFFF',
-                    borderColor: '#082385'
+                    backgroundColor: isSelected ? themeContextValue.secondaryColor : '#FFFFFF',
+                    borderColor: themeContextValue.secondaryColor
                 }}
             >
                 <Text className={`px-4 py-1 ${isSelected ? 'text-white' : 'text-black'}`}>{title}</Text>

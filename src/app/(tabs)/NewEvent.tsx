@@ -1,118 +1,172 @@
-import {Button, SafeAreaView, Text, View} from "react-native";
+import {Button, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {StatusBarColorContext} from "../../contexts/StatusBarColorContext";
 import InputCustom from "../../components/InputCustom";
 import { firestore } from "../../firebase";
 import {ButtonCustom} from "../../components/ButtonCustom";
-import DatePicker from 'react-native-neat-date-picker';
+import DatePickerNeat from 'react-native-neat-date-picker';
 import { LogBox } from 'react-native';
-import { collection, doc, setDoc, getDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
+import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import {format} from "date-fns";
+import {fr} from "date-fns/locale";
+import {ThemeContext} from "../../contexts/ThemeContext";
+import SliderBarAge from "../../components/SliderBarAge";
+import FlashMessage, {showMessage} from "react-native-flash-message";
 
 LogBox.ignoreLogs(['Warning: NeatDatePicker']);
 export default function NewEvent() {
-    const [statusBarColor, setStatusBarColor] = useState('#F4F4F9');
+    const statusContextValue = React.useContext(StatusBarColorContext);
+    const themeContextValue = useContext(ThemeContext);
 
     const [title, setTitle] = useState('');
     const [nomAsso, setNomAsso] = useState('');
+    const [hourEvent, setHourEvent] = useState('');
     const [image, setImage] = useState('');
-    const [logoAsso, setLogoAsso] = useState('');
     const [rabbin, setRabbin] = useState('');
     const [publicSexe, setPublicSexe] = useState('');
-    const [publicAgeMin, setPublicAgeMin] = useState('');
-    const [publicAgeMax, setPublicAgeMax] = useState('');
+    const [publicAgeMin, setPublicAgeMin] = useState(18);
+    const [publicAgeMax, setPublicAgeMax] = useState(100);
+    // Style
+    const styleText = "text-xl font-medium text-black";
 
     // Calendar
-
     const [showDatePickerSingle, setShowDatePickerSingle] = useState(false)
     const [dateEvent, setDateEvent] = useState('');
 
     const openDatePickerSingle = () => setShowDatePickerSingle(true)
 
     const onCancelSingle = () => {
-        // You should close the modal in here
         setShowDatePickerSingle(false)
     }
-    const onConfirmSingle = (output) => {
-        // You should close the modal in here
+    const onConfirmSingle = (output: { dateString: React.SetStateAction<string>; }) => {
         setShowDatePickerSingle(false)
-
-        // The parameter 'output' is an object containing date and dateString (for single mode).
-        // For range mode, the output contains startDate, startDateString, endDate, and EndDateString
-        console.log(output)
         setDateEvent(output.dateString)
+        console.log(output.dateString)
     }
 
+    // Hours
+    const [showTimePicker, setShowTimePicker] = useState(false)
 
     const setEvent = async () => {
+        if (!dateEvent || !title || !nomAsso || !hourEvent || !image || !rabbin || !publicSexe) {
+            showMessage({
+                message: "Veuillez remplir toutes les informations du formulaire",
+                type: "warning",
+                autoHide: true,
+                duration: 2000,
+            });
+            return;
+        }
         try {
-            console.log(dateEvent);
-            const newEventRef = doc(firestore, `dateEvents/${dateEvent}/events`);
-            await setDoc(newEventRef, {
+            const newEventRef = collection(firestore, `/dateEvents/${dateEvent}/events`);
+            await addDoc(newEventRef, {
                 title: title,
                 nomAsso: nomAsso,
                 image: image,
-                logoAsso: logoAsso,
                 rabbin: rabbin,
                 publicSexe: publicSexe,
                 publicAgeMin: publicAgeMin,
                 publicAgeMax: publicAgeMax
             });
+            showMessage({
+                message: "Événement créé avec succès",
+                type: "success",
+                autoHide: true,
+                duration: 2000,
+            });
         } catch (e) {
-            console.error("Error adding document: ", e);
+            showMessage({
+                message: "Une erreur est survenue",
+                type: "danger",
+                autoHide: true,
+                duration: 2000,
+            })
         }
     }
 
     return (
-        <StatusBarColorContext.Provider value={{ statusBarColor, setStatusBarColor }}>
-            <SafeAreaView className={"flex-1 border-6 border-cyan-400"}>
-                <View className={"flex-1"}>
-                    <StatusBar backgroundColor={statusBarColor} style={"dark"}/>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Titre</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setTitle(value)} />
+        <StatusBarColorContext.Provider value={statusContextValue}>
+            <StatusBar backgroundColor={statusContextValue.statusBarColor} style={"dark"}/>
+            <SafeAreaView className={"flex-1"}>
+                <View className={"items-center mb-5"}>
+                    <Text className={"text-2xl font-bold"}>Créer un événement</Text>
+                </View>
+                <ScrollView className={`flex-1 m-5`} showsVerticalScrollIndicator={false}>
+                    <View className={"flex-row justify-between mb-3"}>
+                        <View>
+                            <Text className={styleText}>Date :</Text>
+                            <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
+                                              style={{borderColor: themeContextValue.secondaryColor}}
+                                              onPress={openDatePickerSingle}>
+                                <Text className={"text-md"}>
+                                    {dateEvent ?
+                                        capitalizeFirstLetter(format(dateEvent, "eeee dd MMM", { locale: fr }))
+                                        :
+                                        "Choisir une date"
+                                    }
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text className={styleText}>À : </Text>
+                            <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
+                                              style={{borderColor: themeContextValue.secondaryColor}}>
+                                <Text>Choisir une heure</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Nom de l'association</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setNomAsso(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Image</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setImage(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Logo de l'association</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setLogoAsso(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Rabbin</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setRabbin(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Public sexe</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setPublicSexe(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Age minimum</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setPublicAgeMin(value)} />
-                    </View>
-                    <View className={"border-2 border-black"}>
-                        <Text className={"text-2xl"}>Age maximum</Text>
-                        <InputCustom onInputChange={(value: React.SetStateAction<string>) => setPublicAgeMax(value)} />
-                    </View>
-                    <ButtonCustom title={"Créer l'événement"} handlePress={setEvent} />
-                    <Button title={'single'} onPress={openDatePickerSingle} />
-                    <DatePicker
+                    <DatePickerNeat
                         isVisible={showDatePickerSingle}
                         mode={'single'}
                         onCancel={onCancelSingle}
                         onConfirm={onConfirmSingle}
                         language={'fr'}
-                        dateStringFormat={'dd-mm-yyyy' as any}
+                        dateStringFormat={'yyyy-mm-dd'}
+                        colorOptions={{
+                            headerColor: themeContextValue.secondaryColor,
+                            confirmButtonColor: themeContextValue.secondaryColor,
+                            selectedDateBackgroundColor: themeContextValue.secondaryColor,
+                            weekDaysColor: themeContextValue.secondaryColor
+                    }}/>
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setTitle(value)}
+                        title={"Titre"}
                     />
-
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setNomAsso(value)}
+                        title={"Nom de l'association"}
+                    />
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setHourEvent(value)}
+                        title={"Heure"}
+                    />
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setImage(value)}
+                        title={"Image"}
+                    />
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setRabbin(value)}
+                        title={"Rabbin"}
+                    />
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setPublicSexe(value)}
+                        title={"Sexe"}
+                    />
+                    <SliderBarAge onValuesChange={(values) => {
+                        setPublicAgeMin(values[0]);
+                        setPublicAgeMax(values[1]);
+                    }}
+                                  initialValueMin={18}/>
+                    <View style={{ height: 85 }} />
+                </ScrollView>
+                <View className={"absolute bottom-0 items-center w-full mb-8"}>
+                    <ButtonCustom title={"Créer"} handlePress={setEvent} />
                 </View>
+                <FlashMessage position="top" />
             </SafeAreaView>
         </StatusBarColorContext.Provider>
+
     )
 }

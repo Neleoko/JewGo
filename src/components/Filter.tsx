@@ -1,11 +1,10 @@
-import React, {useContext} from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import React from 'react';
+import {Modal, Text, TouchableOpacity, View} from 'react-native';
+import {Entypo} from '@expo/vector-icons';
 import SliderBarAge from './SliderBarAge';
-import { StatusBarColorContext } from '../contexts/StatusBarColorContext';
 import {Categorie} from "./Categorie";
 
-export default function Filter({ modalVisible, handleFilterButtonClick, setStatusBarColor }) {
+export default function Filter({modalVisible, handleFilterButtonClick, setStatusBarColor}) {
     const handleCategorySelect = (categoryTitle: string) => {
         console.log(categoryTitle);
     };
@@ -19,7 +18,7 @@ export default function Filter({ modalVisible, handleFilterButtonClick, setStatu
                 <View className={"flex-row justify-between"}>
                     <Text className={"text-2xl font-bold"}>Filtres</Text>
                     <TouchableOpacity onPress={handleFilterButtonClick}>
-                        <Entypo name="cross" size={40} color="#082385" />
+                        <Entypo name="cross" size={40} color="#082385"/>
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -33,7 +32,7 @@ export default function Filter({ modalVisible, handleFilterButtonClick, setStatu
                         <Categorie title={"Chabbat"} isClickable={true} onSelect={handleCategorySelect}/>
                     </View>
                 </View>
-                <SliderBarAge onValuesChange={(values) => console.log(values)} />
+                <SliderBarAge onValuesChange={(values) => console.log(values)}/>
             </View>
         </Modal>
     );

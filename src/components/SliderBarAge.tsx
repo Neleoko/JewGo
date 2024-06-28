@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, Text } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import {ThemeContext} from "../contexts/ThemeContext";
 
 interface SliderBarProps {
     onValuesChange: (values: number[]) => void;
+    initialValueMin?: number;
 }
 
-export default function SliderBarAge({ onValuesChange }: SliderBarProps) {
-    const [multiSliderValue, setMultiSliderValue] = React.useState([0, 100]);
-
+export default function SliderBarAge({ onValuesChange, initialValueMin }: SliderBarProps) {
+    const [multiSliderValue, setMultiSliderValue] = React.useState([initialValueMin? initialValueMin:0, 100]);
+    const themeContextValue = useContext(ThemeContext);
     const multiSliderValuesChange = (values: number[]) => {
         setMultiSliderValue(values);
         onValuesChange(values);
@@ -16,7 +18,7 @@ export default function SliderBarAge({ onValuesChange }: SliderBarProps) {
 
     return (
         <View>
-            <Text className={"font-bold text-gray-900 text-lg"}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
+            <Text className={`font-bold text-lg ${themeContextValue.textColor}`}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
             <View className={"justify-center items-center"}>
                 <MultiSlider
                     values={[multiSliderValue[0], multiSliderValue[1]]}
@@ -27,8 +29,15 @@ export default function SliderBarAge({ onValuesChange }: SliderBarProps) {
                     step={1}
                     allowOverlap={false}
                     snapped
-                    selectedStyle={{ backgroundColor: '#082385' }} // Set the selected track color to white
-                    markerStyle={{ height: 28, width: 28, borderRadius: 14, backgroundColor: 'white', borderWidth: 2, borderColor: '#082385' }} // Set the marker styles
+                    selectedStyle={{ backgroundColor: themeContextValue.secondaryColor }}
+                    markerStyle={{
+                        height: 28,
+                        width: 28,
+                        borderRadius: 14,
+                        backgroundColor: 'white',
+                        borderWidth: 2,
+                        borderColor: themeContextValue.secondaryColor
+                    }}
                 />
             </View>
         </View>
