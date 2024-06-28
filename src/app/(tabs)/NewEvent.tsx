@@ -90,10 +90,10 @@ export default function NewEvent() {
         <StatusBarColorContext.Provider value={statusContextValue}>
             <StatusBar backgroundColor={statusContextValue.statusBarColor} style={"dark"}/>
             <SafeAreaView className={"flex-1"}>
-                <View className={"items-center mb-5"}>
+                <View className={"items-center justify-center mt-5"}>
                     <Text className={"text-2xl font-bold"}>Créer un événement</Text>
                 </View>
-                <ScrollView className={`flex-1 m-5`} showsVerticalScrollIndicator={false}>
+                <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
                             <Text className={styleText}>Date :</Text>
