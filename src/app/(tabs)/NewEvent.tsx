@@ -124,6 +124,8 @@ export default function NewEvent() {
                 guest: guest,
                 description: description,
                 categories: selectedCategories,
+                paf: paf,
+                registrationLink: registrationLink,
                 publicSexe: publicSexe,
                 publicAgeMin: publicAgeMin,
                 publicAgeMax: publicAgeMax
@@ -154,7 +156,7 @@ export default function NewEvent() {
                 <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
-                            <Text className={styleText}>Date :</Text>
+                            <Text className={styleText}>Date</Text>
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
                                               style={{borderColor: themeContextValue.secondaryColor}}
                                               onPress={openDatePickerSingle}>
@@ -168,7 +170,7 @@ export default function NewEvent() {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <Text className={styleText}>À : </Text>
+                            <Text className={styleText}>À</Text>
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
                                               style={{borderColor: themeContextValue.secondaryColor}}>
                                 <Text>Choisir une heure</Text>
@@ -177,7 +179,7 @@ export default function NewEvent() {
                     </View>
                     <InputCustom
                         onInputChange={(value: React.SetStateAction<string>) => setTitle(value)}
-                        title={"Titre :"}
+                        title={"Titre"}
                         isMultiline={false}
                         isRequired={true}
                         placeHolder={"Cours de ... / Voyage en Italie"}
@@ -185,7 +187,7 @@ export default function NewEvent() {
                     />
                     <InputCustom
                         onInputChange={(value: React.SetStateAction<string>) => setGuest(value)}
-                        title={"Invité :"}
+                        title={"Invité"}
                         isMultiline={false}
                         isRequired={false}
                         placeHolder={"Nom de l'invité"}
@@ -194,14 +196,14 @@ export default function NewEvent() {
                     <InputCustom
                         // onInputChange={(value: React.SetStateAction<string>) =>setDescription(description.replace(/\n/g, '\\n'))}
                         onInputChange={(value: React.SetStateAction<string>) => setDescription(value)}
-                        title={"Description :"}
+                        title={"Description"}
                         isMultiline={true}
                         isRequired={true}
                         placeHolder={"Événement qui consiste a..."}
                         isNumeric={false}
                     />
                     <View className={"mb-2"}>
-                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie :</Text>
+                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie</Text>
                         <View className={"flex-row flex-wrap"}>
                             {categories.map((category) => (
                                 <Categorie
@@ -214,7 +216,7 @@ export default function NewEvent() {
                         </View>
                     </View>
                     <View className={"mb-1 flex-row"}>
-                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Public :</Text>
+                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Public</Text>
                         <Text style={{color: 'red'}}> *</Text>
                     </View>
                     <View className={"mb-2 flex-row"}>
@@ -233,7 +235,7 @@ export default function NewEvent() {
                     <View className={"items-start"}>
                         <InputCustom
                             onInputChange={(value: React.SetStateAction<string>) => setPaf(Number(value))}
-                            title={"PAF :"}
+                            title={"PAF"}
                             isMultiline={false}
                             isRequired={false}
                             placeHolder={"00"}
@@ -242,7 +244,7 @@ export default function NewEvent() {
                     </View>
                     <InputCustom
                         onInputChange={(value: React.SetStateAction<string>) => setRegistrationLink(value)}
-                        title={"Lien d'inscription :"}
+                        title={"Lien d'inscription"}
                         isMultiline={false}
                         isRequired={false}
                         placeHolder={"https://..."}
