@@ -6,9 +6,10 @@ import {ThemeContext} from "../contexts/ThemeContext";
 interface SliderBarProps {
     onValuesChange: (values: number[]) => void;
     initialValueMin?: number;
+    isRequired?: boolean;
 }
 
-export default function SliderBarAge({ onValuesChange, initialValueMin }: SliderBarProps) {
+export default function SliderBarAge({ onValuesChange, initialValueMin, isRequired }: SliderBarProps) {
     const [multiSliderValue, setMultiSliderValue] = React.useState([initialValueMin? initialValueMin:0, 100]);
     const themeContextValue = useContext(ThemeContext);
     const multiSliderValuesChange = (values: number[]) => {
@@ -18,7 +19,11 @@ export default function SliderBarAge({ onValuesChange, initialValueMin }: Slider
 
     return (
         <View>
-            <Text className={`font-bold text-lg ${themeContextValue.textColor}`}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
+            <View className={"flex-row"}>
+                <Text className={`font-bold text-lg ${themeContextValue.textColor}`}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
+                {isRequired && <Text style={{color: 'red'}}> *</Text>}
+            </View>
+
             <View className={"justify-center items-center"}>
                 <MultiSlider
                     values={[multiSliderValue[0], multiSliderValue[1]]}

@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
 import {ThemeContext} from "../../contexts/ThemeContext";
+import Markdown from "react-native-markdown-display";
 
 export default function EventView() {
     const params = useLocalSearchParams();
@@ -83,22 +84,9 @@ export default function EventView() {
 
                         </View>
                         <View className={"m-4"}>
-                            <Text className={"text-lg"}>
-                                Hello les ami(e)s voici les informations du 3×45 de ce jeudi 6 juin avec le partenariat exceptionnel de Olami saint-mandé 🥳🥳🥳
-                                exceptionnellement le jeudi{"\n"}
-                                {"\n"}
-                                20h : C'EST CACHER ? ✡{"\n"}
-                                Sur le thème :{"\n"}
-                                Tout savoir sur le cacher, le lait chamour, la production de fromage...{"\n"}
-                                Présence exceptionnelle du Rav Parsy qui nous parlera des secrets de la fête de Chavouot{"\n"}
-                                {"\n"}
-                                20h45 : ATELIER FROMAGE 🧀{"\n"}
-                                Apprendre à faire un fromage artisanal{"\n"}
-                                {"\n"}
-                                21h30 : DÉGUSTATION 😋{"\n"}
-                                Dégustation de plusieurs sortes de fromages, paninis, pizzas, bons vins...{"\n"}
-
-                            </Text>
+                            <Markdown style={{body: {fontSize:18}}}>
+                                TEXT DESCRIPTION
+                            </Markdown>
                             <View>
                                 <Text className={"text-lg mb-2"}>
                                     Age moyen : {evenement.publicAgeMin} - {evenement.publicAgeMax} ans
