@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {Text, SafeAreaView, ScrollView, View} from 'react-native';
+import {Text, SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
 import {Evenement} from "../../components/Evenement";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -89,6 +89,8 @@ const dateEvent =
 export default function Home() {
     const router = useRouter();
 
+    const [refreshing, setRefreshing] = useState(false);
+
     const statusContextValue = React.useContext(StatusBarColorContext);
     const themeContextValue = React.useContext(ThemeContext);
 
@@ -96,13 +98,26 @@ export default function Home() {
         { label: 'Tout', value: '1' },
         { label: 'Abonnement', value: '2' }
     ];
-
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        // Ici, vous pouvez appeler votre fonction pour recharger les données
+        // Par exemple, vous pouvez appeler une fonction fetchData() qui récupère les données
+        // fetchData().then(() => {
+            setRefreshing(false);
+        // });
+    }, []);
     return (
         <ThemeContext.Provider value={themeContextValue}>
             <StatusBarColorContext.Provider value={statusContextValue}>
                 <SafeAreaView className={"flex-1 border-6 border-cyan-400"}>
                     <StatusBar backgroundColor={statusContextValue.statusBarColor} style={"dark"}/>
                     <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                            />
+                        }
                         className={"flex-1"}
                         style={{backgroundColor:themeContextValue.primaryColor}}
                         showsVerticalScrollIndicator={false}
