@@ -15,6 +15,8 @@ import {ThemeContext} from "../../contexts/ThemeContext";
 import SliderBarAge from "../../components/SliderBarAge";
 import FlashMessage, {showMessage} from "react-native-flash-message";
 import {Categorie} from "../../components/Categorie";
+import { doc, getDocs, query } from "firebase/firestore";
+import {SingleChoice} from "../../components/SingleChoice";
 
 LogBox.ignoreLogs(['Warning: NeatDatePicker']);
 export default function NewEvent() {
@@ -32,7 +34,8 @@ export default function NewEvent() {
     const [publicAgeMin, setPublicAgeMin] = useState(18);
     const [publicAgeMax, setPublicAgeMax] = useState(100);
     const [paf, setPaf] = useState(0);
-
+    const [registrationLink, setRegistrationLink] = useState('');
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
     //keyboard
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -40,14 +43,14 @@ export default function NewEvent() {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => {
-                setKeyboardVisible(true); // ou tout autre action que vous souhaitez effectuer
+                setKeyboardVisible(true);
             }
         );
 
         const keyboardDidHideListener = Keyboard.addListener(
             'keyboardDidHide',
             () => {
-                setKeyboardVisible(false); // ou tout autre action que vous souhaitez effectuer
+                setKeyboardVisible(false);
             }
         );
 
@@ -57,7 +60,23 @@ export default function NewEvent() {
         };
     }, []);
 
+
     //Categorie
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        const getCategories = async () => {
+            const categoriesCollection = collection(firestore, "categories");
+            const categoriesQuery = query(categoriesCollection);
+            const categoriesSnapshot = await getDocs(categoriesQuery);
+            categoriesSnapshot.forEach((doc) => {
+                // Accéder à la propriété 'categories' de l'objet
+                const categoriesData = doc.data().categories;
+                setCategories(categoriesData.sort());
+            });
+        };
+        getCategories();
+    }, []);
+
     const handleCategorySelect = (categoryTitle: string) => {
     if (selectedCategories.includes(categoryTitle)) {
         setSelectedCategories(selectedCategories.filter(category => category !== categoryTitle));
@@ -65,7 +84,6 @@ export default function NewEvent() {
         setSelectedCategories([...selectedCategories, categoryTitle]);
     }
 };
-    console.log(selectedCategories);
     // Style
     const styleText = "text-xl font-medium text-black";
 
@@ -81,7 +99,6 @@ export default function NewEvent() {
     const onConfirmSingle = (output: { dateString: React.SetStateAction<string>; }) => {
         setShowDatePickerSingle(false)
         setDateEvent(output.dateString)
-        console.log(output.dateString)
     }
 
     // Hours
@@ -183,26 +200,28 @@ export default function NewEvent() {
                         placeHolder={"Événement qui consiste a..."}
                         isNumeric={false}
                     />
-                    {/*categorie*/}
-                    <View>
+                    <View className={"mb-2"}>
                         <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie :</Text>
                         <View className={"flex-row flex-wrap"}>
-                            <Categorie title={"Cours"} isClickable={true} onSelect={handleCategorySelect}/>
-                            <Categorie title={"Soirée"} isClickable={true} onSelect={handleCategorySelect}/>
-                            <Categorie title={"Repas"} isClickable={true} onSelect={handleCategorySelect}/>
-                            <Categorie title={"Sport"} isClickable={true} onSelect={handleCategorySelect}/>
-                            <Categorie title={"Culture"} isClickable={true} onSelect={handleCategorySelect}/>
-                            <Categorie title={"Chabbat"} isClickable={true} onSelect={handleCategorySelect}/>
+                            {categories.map((category) => (
+                                <Categorie
+                                    key={category}
+                                    title={category}
+                                    isClickable={true}
+                                    onSelect={handleCategorySelect}
+                                />
+                            ))}
                         </View>
                     </View>
-                    <InputCustom
-                        onInputChange={(value: React.SetStateAction<string>) => setPublicSexe(value)}
-                        title={"Public :"}
-                        isMultiline={false}
-                        isRequired={true}
-                        placeHolder={"Tout public / Adulte / Enfant"}
-                        isNumeric={false}
-                    />
+                    <View className={"mb-1 flex-row"}>
+                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Public :</Text>
+                        <Text style={{color: 'red'}}> *</Text>
+                    </View>
+                    <View className={"mb-2 flex-row"}>
+                        <SingleChoice title={"Mixte"} isClickable={true} isSelected={publicSexe === 'mixte'} onSelect={() => { setPublicSexe('mixte')}}/>
+                        <SingleChoice title={"Femme"} isClickable={true} isSelected={publicSexe === 'femme'} onSelect={() => { setPublicSexe('femme')}}/>
+                        <SingleChoice title={"Homme"} isClickable={true} isSelected={publicSexe === 'homme'} onSelect={() => { setPublicSexe('homme')}}/>
+                    </View>
                     <SliderBarAge
                         onValuesChange={(values) => {
                         setPublicAgeMin(values[0]);
@@ -213,7 +232,7 @@ export default function NewEvent() {
                     />
                     <View className={"items-start"}>
                         <InputCustom
-                            onInputChange={(value: React.SetStateAction<string>) => setPublicSexe(value)}
+                            onInputChange={(value: React.SetStateAction<string>) => setPaf(Number(value))}
                             title={"PAF :"}
                             isMultiline={false}
                             isRequired={false}
@@ -221,8 +240,16 @@ export default function NewEvent() {
                             isNumeric={true}
                         />
                     </View>
+                    <InputCustom
+                        onInputChange={(value: React.SetStateAction<string>) => setRegistrationLink(value)}
+                        title={"Lien d'inscription :"}
+                        isMultiline={false}
+                        isRequired={false}
+                        placeHolder={"https://..."}
+                        isNumeric={false}
+                    />
                     {!isKeyboardVisible && (
-                        <View style={{ height: 100 }} />
+                        <View style={{ height: 110 }} />
                     )}
                 </ScrollView>
                 {!isKeyboardVisible && (

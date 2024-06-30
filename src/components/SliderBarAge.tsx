@@ -20,7 +20,7 @@ export default function SliderBarAge({ onValuesChange, initialValueMin, isRequir
     return (
         <View>
             <View className={"flex-row"}>
-                <Text className={`font-bold text-lg ${themeContextValue.textColor}`}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
+                <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Age : {multiSliderValue[0]} - {multiSliderValue[1]}</Text>
                 {isRequired && <Text style={{color: 'red'}}> *</Text>}
             </View>
 
@@ -29,7 +29,7 @@ export default function SliderBarAge({ onValuesChange, initialValueMin, isRequir
                     values={[multiSliderValue[0], multiSliderValue[1]]}
                     sliderLength={300} // Increase the length of the slider
                     onValuesChange={multiSliderValuesChange}
-                    min={0}
+                    min={1}
                     max={100}
                     step={1}
                     allowOverlap={false}

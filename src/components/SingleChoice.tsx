@@ -5,21 +5,18 @@ import {ThemeContext} from "../contexts/ThemeContext";
 export type ButtonProps = {
     title: string,
     isClickable?: boolean,
-    onSelect?: (value: string) => void
+    onSelect?: (value: string) => void,
+    isSelected: boolean
 }
 
-export const Categorie = ({title, isClickable = false, onSelect}: ButtonProps) => {
-    const [isSelected, setIsSelected] = useState(false);
+export const SingleChoice = ({title, isClickable = false, onSelect, isSelected}: ButtonProps) => {
     const themeContextValue = useContext(ThemeContext);
     const handlePress = () => {
-        setIsSelected(!isSelected);
         onSelect && onSelect(title); // Vérifier si onSelect existe avant de l'appeler
     };
 
-    const Component: ComponentType<any> = isClickable ? TouchableOpacity : View;
-
     return (
-        <Component onPress={isClickable ? handlePress : undefined}>
+        <TouchableOpacity onPress={isClickable ? handlePress : undefined}>
             <View
                 className={`rounded-2xl mx-1 mt-3 items-center border-2`}
                 style={{
@@ -29,6 +26,6 @@ export const Categorie = ({title, isClickable = false, onSelect}: ButtonProps) =
             >
                 <Text className={`px-4 py-1 ${isSelected ? 'text-white' : 'text-black'}`}>{title}</Text>
             </View>
-        </Component>
+        </TouchableOpacity>
     )
 };

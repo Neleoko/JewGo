@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from "../contexts/ThemeContext";
+import {Entypo} from "@expo/vector-icons";
 
 export default function InputCustom({ onInputChange, title, isMultiline, placeHolder, isRequired, isNumeric }) {
     const [inputValue, setInputValue] = useState('');
-
     const themeContextValue = useContext(ThemeContext);
 
     const handleInputChange = (value: string) => {

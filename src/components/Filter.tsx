@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Modal, Text, TouchableOpacity, View} from 'react-native';
 import {Entypo} from '@expo/vector-icons';
 import SliderBarAge from './SliderBarAge';
 import {Categorie} from "./Categorie";
+import {ThemeContext} from "../contexts/ThemeContext";
 
 export default function Filter({modalVisible, handleFilterButtonClick, setStatusBarColor}) {
+    const themeContextValue = useContext(ThemeContext);
+
     const handleCategorySelect = (categoryTitle: string) => {
         console.log(categoryTitle);
     };
@@ -22,7 +25,7 @@ export default function Filter({modalVisible, handleFilterButtonClick, setStatus
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <Text className={"font-bold text-gray-900 text-lg"}>Catégorie :</Text>
+                    <Text className={`font-bold text-[${themeContextValue.textColor}] text-lg`}>Catégorie :</Text>
                     <View className={"flex-row flex-wrap"}>
                         <Categorie title={"Cours"} isClickable={true} onSelect={handleCategorySelect}/>
                         <Categorie title={"Soirée"} isClickable={true} onSelect={handleCategorySelect}/>
