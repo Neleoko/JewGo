@@ -3,11 +3,11 @@ import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {StatusBarColorContext} from "../../contexts/StatusBarColorContext";
 import InputCustom from "../../components/InputCustom";
-import { firestore } from "../../firebase";
+import { firestore } from "../../firebase/firebase";
 import {ButtonCustom} from "../../components/ButtonCustom";
 import DatePickerNeat from 'react-native-neat-date-picker';
 import { LogBox } from 'react-native';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc } from "firebase/firestore";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import {format} from "date-fns";
 import {fr} from "date-fns/locale";
@@ -15,10 +15,17 @@ import {ThemeContext} from "../../contexts/ThemeContext";
 import SliderBarAge from "../../components/SliderBarAge";
 import FlashMessage, {showMessage} from "react-native-flash-message";
 import {Categorie} from "../../components/Categorie";
-import { doc, getDocs, query } from "firebase/firestore";
+import {getCategories} from "../../firebase/query/categoriesService";
 import {SingleChoice} from "../../components/SingleChoice";
+import {newEvent} from "../../firebase/query/eventService";
+import * as events from "node:events";
 
 LogBox.ignoreLogs(['Warning: NeatDatePicker']);
+
+
+
+
+
 export default function NewEvent() {
     const statusContextValue = React.useContext(StatusBarColorContext);
     const themeContextValue = useContext(ThemeContext);
@@ -64,17 +71,12 @@ export default function NewEvent() {
     //Categorie
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        const getCategories = async () => {
-            const categoriesCollection = collection(firestore, "categories");
-            const categoriesQuery = query(categoriesCollection);
-            const categoriesSnapshot = await getDocs(categoriesQuery);
-            categoriesSnapshot.forEach((doc) => {
-                // Accéder à la propriété 'categories' de l'objet
-                const categoriesData = doc.data().categories;
-                setCategories(categoriesData.sort());
-            });
-        };
-        getCategories();
+        const fetchCategories = async () => {
+            const categories = await getCategories();
+            setCategories(categories);
+        }
+
+        fetchCategories();
     }, []);
 
     const handleCategorySelect = (categoryTitle: string) => {
@@ -116,8 +118,7 @@ export default function NewEvent() {
             return;
         }
         try {
-            const newEventRef = collection(firestore, `/dateEvents/${dateEvent}/events`);
-            await addDoc(newEventRef, {
+            const event = {
                 title: title,
                 nomAsso: nomAsso,
                 image: image,
@@ -129,7 +130,9 @@ export default function NewEvent() {
                 publicSexe: publicSexe,
                 publicAgeMin: publicAgeMin,
                 publicAgeMax: publicAgeMax
-            });
+            }
+            await newEvent(dateEvent, event);
+
             showMessage({
                 message: "Événement créé avec succès",
                 type: "success",

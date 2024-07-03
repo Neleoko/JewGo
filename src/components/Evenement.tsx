@@ -2,14 +2,17 @@ import {Button, Image, ImageSourcePropType, Modal, Text, TouchableOpacity, View}
 
 export type EvenementProps = {
     evenement: {
-        id: number
-        title: string
-        nomAsso: string
-        image: ImageSourcePropType
-        logoAsso: ImageSourcePropType
-        rabbin: string
-        publicSexe: string
-        publicAgeMin: number
+        title: string,
+        nomAsso: string,
+        image: ImageSourcePropType,
+        guest: string,
+        description: string,
+        logoAsso: ImageSourcePropType,
+        categories: string[],
+        paf: number,
+        registrationLink: string,
+        publicSexe: string,
+        publicAgeMin: number,
         publicAgeMax: number
     },
     handlePress?: () => void
@@ -33,7 +36,7 @@ export const Evenement = ({evenement, handlePress}: EvenementProps) => {
                 <View className={"flex-row"}>
                     <View className={"flex-col flex-1"}>
                         <Text className={"font-semibold text-xl"}>{evenement.title}</Text>
-                        <Text className={"font-medium text-l"}>{evenement.rabbin}</Text>
+                        <Text className={"font-medium text-l"}>{evenement.guest}</Text>
                     </View>
                     <View>
                         <Image
