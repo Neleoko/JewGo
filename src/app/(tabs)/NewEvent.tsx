@@ -1,16 +1,13 @@
-import {Button, Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {StatusBarColorContext} from "../../contexts/StatusBarColorContext";
 import InputCustom from "../../components/InputCustom";
-import { firestore } from "../../firebase/firebase";
 import {ButtonCustom} from "../../components/ButtonCustom";
 import DatePickerNeat from 'react-native-neat-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { LogBox } from 'react-native';
-import { collection, addDoc, setDoc } from "firebase/firestore";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import {format} from "date-fns";
-import {fr} from "date-fns/locale";
+import characterUtils from "../../utils/characterUtils";
 import {ThemeContext} from "../../contexts/ThemeContext";
 import SliderBarAge from "../../components/SliderBarAge";
 import FlashMessage, {showMessage} from "react-native-flash-message";
@@ -18,13 +15,12 @@ import {Categorie} from "../../components/Categorie";
 import {getCategories} from "../../firebase/query/categoriesService";
 import {SingleChoice} from "../../components/SingleChoice";
 import {newEvent} from "../../firebase/query/eventService";
-import * as events from "node:events";
+import {formateDate, formatTime} from "../../utils/dateUtils";
+import {Ionicons} from "@expo/vector-icons";
+import {useNavigation} from "@react-navigation/native";
+import isLinkValid from "../../utils/linkUtils";
 
 LogBox.ignoreLogs(['Warning: NeatDatePicker']);
-
-
-
-
 
 export default function NewEvent() {
     const statusContextValue = React.useContext(StatusBarColorContext);
@@ -32,19 +28,20 @@ export default function NewEvent() {
 
     const [title, setTitle] = useState('');
     const [nomAsso, setNomAsso] = useState('');
-    const [hourEvent, setHourEvent] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
     const [guest, setGuest] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [publicSexe, setPublicSexe] = useState('');
+    const [publicSexe, setPublicSexe] = useState('Mixte');
     const [publicAgeMin, setPublicAgeMin] = useState(18);
     const [publicAgeMax, setPublicAgeMax] = useState(100);
     const [paf, setPaf] = useState(0);
     const [registrationLink, setRegistrationLink] = useState('');
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
     //keyboard
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    const navigation = useNavigation();
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -105,8 +102,32 @@ export default function NewEvent() {
 
     // Hours
     const [showTimePicker, setShowTimePicker] = useState(false)
+    const [timeEvent, setTimeEvent] = useState('');
+
+    const onChangeTime = (event: any, selectedTime: any) => {
+        if (event.type === 'set') {
+            // L'utilisateur a sélectionné une heure
+            setShowTimePicker(false)
+            setTimeEvent(formatTime(selectedTime))
+        } else {
+            // L'utilisateur a annulé la sélection
+            setShowTimePicker(false)
+            setTimeEvent('')
+        }
+    }
 
     const setEvent = async () => {
+        if (registrationLink !== "") {
+            if (await isLinkValid(registrationLink) === false) {
+                showMessage({
+                    message: "Le lien d'inscription n'est pas valide",
+                    type: "warning",
+                    autoHide: true,
+                    duration: 2000,
+                });
+                return;
+            }
+        }
         if (!dateEvent || !title || !description || !publicSexe) {
             showMessage({
                 message: "Veuillez remplir les champs obligatoires",
@@ -114,13 +135,13 @@ export default function NewEvent() {
                 autoHide: true,
                 duration: 2000,
             });
-            console.log("champs manquants" + dateEvent + title + nomAsso + image + publicSexe);
             return;
         }
         try {
             const event = {
                 title: title,
                 nomAsso: nomAsso,
+                time: timeEvent,
                 image: image,
                 guest: guest,
                 description: description,
@@ -153,19 +174,29 @@ export default function NewEvent() {
         <StatusBarColorContext.Provider value={statusContextValue}>
             <StatusBar backgroundColor={statusContextValue.statusBarColor} style={"dark"}/>
             <SafeAreaView className={"flex-1"}>
-                <View className={"items-center justify-center mt-5"}>
+                <View className={"flex-row justify-between items-center p-5"}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.goBack();
+                        }}>
+                        <Ionicons name="arrow-back-outline" size={30} color="black"/>
+                    </TouchableOpacity>
                     <Text className={"text-2xl font-bold"}>Créer un événement</Text>
+                    <View />
                 </View>
                 <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
-                            <Text className={styleText}>Date</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text className={styleText}>Date</Text>
+                                <Text style={{color: 'red'}}> *</Text>
+                            </View>
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
                                               style={{borderColor: themeContextValue.secondaryColor}}
                                               onPress={openDatePickerSingle}>
                                 <Text className={"text-md"}>
                                     {dateEvent ?
-                                        capitalizeFirstLetter(format(dateEvent, "eeee dd MMM", { locale: fr }))
+                                        characterUtils(formateDate(dateEvent))
                                         :
                                         "Choisir une date"
                                     }
@@ -175,8 +206,17 @@ export default function NewEvent() {
                         <View>
                             <Text className={styleText}>À</Text>
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
-                                              style={{borderColor: themeContextValue.secondaryColor}}>
-                                <Text>Choisir une heure</Text>
+                                              style={{borderColor: themeContextValue.secondaryColor}}
+                                                onPress={() => setShowTimePicker(true)}
+                            >
+                                <Text className={"text-md"}>
+                                    {timeEvent ?
+                                        // timeEvent
+                                        timeEvent
+                                        :
+                                        "Choisir une heure"
+                                    }
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -223,9 +263,9 @@ export default function NewEvent() {
                         <Text style={{color: 'red'}}> *</Text>
                     </View>
                     <View className={"mb-2 flex-row"}>
-                        <SingleChoice title={"Mixte"} isClickable={true} isSelected={publicSexe === 'mixte'} onSelect={() => { setPublicSexe('mixte')}}/>
-                        <SingleChoice title={"Femme"} isClickable={true} isSelected={publicSexe === 'femme'} onSelect={() => { setPublicSexe('femme')}}/>
-                        <SingleChoice title={"Homme"} isClickable={true} isSelected={publicSexe === 'homme'} onSelect={() => { setPublicSexe('homme')}}/>
+                        <SingleChoice title={"Mixte"} isClickable={true} isSelected={publicSexe === 'Mixte'} onSelect={() => { setPublicSexe('Mixte')}}/>
+                        <SingleChoice title={"Femme"} isClickable={true} isSelected={publicSexe === 'Femme'} onSelect={() => { setPublicSexe('Femme')}}/>
+                        <SingleChoice title={"Homme"} isClickable={true} isSelected={publicSexe === 'Homme'} onSelect={() => { setPublicSexe('Homme')}}/>
                     </View>
                     <SliderBarAge
                         onValuesChange={(values) => {
@@ -276,6 +316,16 @@ export default function NewEvent() {
                         selectedDateBackgroundColor: themeContextValue.secondaryColor,
                         weekDaysColor: themeContextValue.secondaryColor
                     }}/>
+                { showTimePicker && (
+                    <DateTimePicker
+                        value={new Date()}
+                        mode={'time'}
+                        display={'spinner'}
+                        onChange={onChangeTime}
+                        is24Hour={true}
+                        minuteInterval={5}
+                    />
+                )}
             </SafeAreaView>
         </StatusBarColorContext.Provider>
 

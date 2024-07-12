@@ -36,7 +36,11 @@ export const Evenement = ({evenement, handlePress}: EvenementProps) => {
                 <View className={"flex-row"}>
                     <View className={"flex-col flex-1"}>
                         <Text className={"font-semibold text-xl"}>{evenement.title}</Text>
-                        <Text className={"font-medium text-l"}>{evenement.guest}</Text>
+                        <Text className={"font-medium"}>{evenement.nomAsso}</Text>
+                        {evenement.guest && (
+                            <Text className={"font-medium"}>{evenement.guest}</Text>
+                        )}
+
                     </View>
                     <View>
                         <Image

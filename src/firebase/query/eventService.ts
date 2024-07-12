@@ -1,10 +1,11 @@
-import {addDoc, collection, getDocs, query, where, doc, getDoc, DocumentData} from "firebase/firestore";
+import {addDoc, collection, getDocs, query, where, doc, getDoc, orderBy} from "firebase/firestore";
 import {firestore} from "../firebase";
 
 
 export const getEvents = async () => {
     const dateEventsCollection = collection(firestore, "dateEvents");
-    const dateEventsSnapshot = await getDocs(dateEventsCollection);
+    const dateEventsQuery = query(dateEventsCollection, orderBy("date"));
+    const dateEventsSnapshot = await getDocs(dateEventsQuery);
     const eventsData = [];
     for (const dateDoc of dateEventsSnapshot.docs) {
         const date = dateDoc.data().date;

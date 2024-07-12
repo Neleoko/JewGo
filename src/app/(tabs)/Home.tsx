@@ -3,7 +3,7 @@ import {Text, SafeAreaView, ScrollView, View, RefreshControl, ActivityIndicator}
 import {Evenement} from "../../components/Evenement";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import CapitalizeFirstLetter from "../../utils/characterUtils";
 import {useFocusEffect, useRouter} from "expo-router";
 import SwitchSelector from "react-native-switch-selector";
 import React, {useEffect, useState} from "react";
@@ -71,7 +71,7 @@ export default function Home() {
                                 </View>
                             ) : (
                                 event.map((dateEvent) => {
-                                        const date = capitalizeFirstLetter(format(new Date(dateEvent.date).getTime(), "eeee dd MMMM", {locale: fr}))
+                                        const date = CapitalizeFirstLetter(format(new Date(dateEvent.date).getTime(), "eeee dd MMMM", {locale: fr}))
                                         return (
                                             <View key={dateEvent.date}>
                                                 <Text className={"text-3xl font-black"} style={{color:themeContextValue.textColor}}>{date}</Text>
