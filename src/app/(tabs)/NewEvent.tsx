@@ -1,4 +1,4 @@
-import {Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {StatusBarColorContext} from "../../contexts/StatusBarColorContext";
@@ -17,6 +17,7 @@ import {SingleChoice} from "../../components/SingleChoice";
 import {newEvent} from "../../firebase/query/eventService";
 import {formateDate, formatTime} from "../../utils/dateUtils";
 import {Ionicons} from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import isLinkValid from "../../utils/linkUtils";
 
@@ -72,7 +73,6 @@ export default function NewEvent() {
             const categories = await getCategories();
             setCategories(categories);
         }
-
         fetchCategories();
     }, []);
 
@@ -115,6 +115,8 @@ export default function NewEvent() {
             setTimeEvent('')
         }
     }
+
+    // Image
 
     const setEvent = async () => {
         if (registrationLink !== "") {
@@ -185,6 +187,32 @@ export default function NewEvent() {
                     <View />
                 </View>
                 <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
+
+                    <TouchableOpacity className={"bg-white h-80 mx-8 my-5 justify-center items-center"}>
+                            <Image
+                                resizeMode="contain"
+                                source={require('../../assets/images/fleg.jpg')}
+                                className="w-full h-full  rounded-lg border-black"
+                            />
+                    </TouchableOpacity>
+
+                    {/*<TouchableOpacity*/}
+                    {/*    className={"bg-white h-80 mx-8 my-5 border-2 rounded-lg justify-center items-center"}*/}
+                    {/*    style={{borderColor: themeContextValue.secondaryColor}}*/}
+                    {/*>*/}
+                    {/*    /!*{*!/*/}
+                    {/*    /!*    image ? (*!/*/}
+                    {/*        <Image*/}
+                    {/*            resizeMode={"contain"}*/}
+                    {/*            source={require('../../assets/images/fleg.jpg')}*/}
+                    {/*            style={{ width: '100%',height:'100%', maxHeight: 300 }}*/}
+                    {/*        />*/}
+                    {/*        /!*) : (*!/*/}
+                    {/*        /!*    <AntDesign name="pluscircleo" size={30} color="black"/>*!/*/}
+                    {/*        /!*)*!/*/}
+                    {/*    /!*}*!/*/}
+
+                    {/*</TouchableOpacity>*/}
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
