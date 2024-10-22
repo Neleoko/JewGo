@@ -1,4 +1,4 @@
-import {Image, Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, ImageBackground, Keyboard, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {StatusBarColorContext} from "../../contexts/StatusBarColorContext";
@@ -20,6 +20,7 @@ import {Ionicons} from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import isLinkValid from "../../utils/linkUtils";
+import * as ImagePicker from 'expo-image-picker';
 
 LogBox.ignoreLogs(['Warning: NeatDatePicker']);
 
@@ -77,12 +78,12 @@ export default function NewEvent() {
     }, []);
 
     const handleCategorySelect = (categoryTitle: string) => {
-    if (selectedCategories.includes(categoryTitle)) {
-        setSelectedCategories(selectedCategories.filter(category => category !== categoryTitle));
-    } else {
-        setSelectedCategories([...selectedCategories, categoryTitle]);
-    }
-};
+        if (selectedCategories.includes(categoryTitle)) {
+            setSelectedCategories(selectedCategories.filter(category => category !== categoryTitle));
+        } else {
+            setSelectedCategories([...selectedCategories, categoryTitle]);
+        }
+    };
     // Style
     const styleText = "text-xl font-medium text-black";
 
@@ -118,7 +119,32 @@ export default function NewEvent() {
 
     // Image
 
-    const setEvent = async () => {
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 6],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+    console.log(image);
+    const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
+    useEffect(() => {
+        if (image) {
+            Image.getSize(image, (width, height) => {
+                setImageDimensions({ width, height });
+            });
+        }
+    }, [image]);
+
+
+        const setEvent = async () => {
         if (registrationLink !== "") {
             if (await isLinkValid(registrationLink) === false) {
                 showMessage({
@@ -188,12 +214,26 @@ export default function NewEvent() {
                 </View>
                 <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
 
-                    <TouchableOpacity className={"bg-white h-80 mx-8 my-5 justify-center items-center"}>
-                            <Image
-                                resizeMode="contain"
-                                source={require('../../assets/images/fleg.jpg')}
-                                className="w-full h-full  rounded-lg border-black"
-                            />
+                    <TouchableOpacity
+                        className={'bg-white h-80 mx-8 my-5 border-2 rounded-lg justify-center items-center'}
+                        onPress={pickImage}
+                    >
+                        {image ? (
+                            <ImageBackground
+                                source={{ uri: image }}
+                                className="w-full h-full justify-center content-center rounded-lg"
+                                imageStyle={{borderRadius: 5}}
+                                blurRadius={10}
+                            >
+                                <Image
+                                    resizeMode="contain"
+                                    source={{uri: image}}
+                                    className="w-full h-full rounded-lg border-black"
+                                />
+                            </ImageBackground>
+                        ) : (
+                            <AntDesign name="pluscircleo" size={30} color="black"/>
+                        )}
                     </TouchableOpacity>
 
                     {/*<TouchableOpacity*/}

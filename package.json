@@ -33,7 +33,6 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.2",
     "react-native-flash-message": "^0.4.2",
-    "react-native-image-picker": "^7.1.2",
     "react-native-linking": "^0.0.0",
     "react-native-markdown-display": "^7.0.2",
     "react-native-neat-date-picker": "^1.4.12",
@@ -41,7 +40,8 @@
     "react-native-screens": "~3.31.1",
     "react-native-switch-selector": "^2.3.0",
     "react-native-web": "~0.19.12",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-image-picker": "~15.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
