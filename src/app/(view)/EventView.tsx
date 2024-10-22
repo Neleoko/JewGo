@@ -1,5 +1,5 @@
 import {
-    ActivityIndicator,
+    ActivityIndicator, Image, ImageBackground,
     Linking,
     Platform,
     SafeAreaView,
@@ -83,18 +83,22 @@ export default function NewEvent() {
                                     {eventData.time && (<Text className={"text-3xl text-center"}>{eventData.time}</Text>)}
                                     {eventData.guest && (<Text className={"text-3xl text-center"}>{eventData.guest}</Text>)}
                                 </View>
-                                <View className={"items-center"}>
-                                {/*<TouchableOpacity onPress={() => router.navigate({*/}
-                                {/*    pathname: '/imageView',*/}
-                                {/*}) }>*/}
-                                {/*    <Image*/}
-                                {/*        className={"border-2"}*/}
-                                {/*        style={{width: 350, height: 325}}*/}
-                                {/*        resizeMode={"contain"}*/}
-                                {/*        source={evenement.image}*/}
-                                {/*    />*/}
-                                {/*</TouchableOpacity>*/}
-                                </View>
+                                {/*<View className={"items-center"}>*/}
+                                    <View className={'bg-white h-80 mx-6 justify-center items-center'}>
+                                        <ImageBackground
+                                            source={{ uri: eventData.image }}
+                                            className="w-full h-full justify-center content-center rounded-lg"
+                                            imageStyle={{borderRadius: 5}}
+                                            blurRadius={10}
+                                        >
+                                            <Image
+                                                resizeMode="contain"
+                                                source={{uri: eventData.image}}
+                                                className="w-full h-full rounded-lg border-black"
+                                            />
+                                        </ImageBackground>
+                                    </View>
+                                {/*</View>*/}
                                 <View className={"flex-row flex-wrap justify-center"}>
                                     {eventData.categories.map((category) => (
                                         <Categorie

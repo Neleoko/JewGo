@@ -1,5 +1,8 @@
-import {addDoc, collection, getDocs, query, where, doc, getDoc, orderBy} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc, getDocs, orderBy, query, where} from "firebase/firestore";
 import {firestore} from "../firebase";
+import {getStorage, getDownloadURL, ref, uploadBytes} from 'firebase/storage';
+
+const storage = getStorage();
 
 
 export const getEvents = async () => {
@@ -77,3 +80,23 @@ export const newEvent = async (date: string, event: any) => {
     // add a new event to the collection
     await addDoc(eventsCollection, event);
 }
+
+export const addImageToDB = async (uri: string) => {
+    try {
+        // Convert the image URI to a Blob
+        const response = await fetch(uri);
+        const blob = await response.blob();
+
+        // Create a reference to the Firebase Storage location
+        const imageRef = ref(storage, `imagesEvents/${Date.now()}_${Math.random().toString(36).substring(7)}`);
+        // Upload the image Blob to Firebase Storage
+        await uploadBytes(imageRef, blob);
+
+        // Retrieve the download URL of the uploaded image
+        // Return the download URL
+        return await getDownloadURL(imageRef);
+    } catch (error) {
+        console.error('Erreur lors du téléchargement de l\'image :', error);
+        return null;
+    }
+};

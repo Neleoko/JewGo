@@ -4,7 +4,7 @@ export type EvenementProps = {
     evenement: {
         title: string,
         nomAsso: string,
-        image: ImageSourcePropType,
+        image: string,
         guest: string,
         description: string,
         logoAsso: ImageSourcePropType,
@@ -30,7 +30,7 @@ export const Evenement = ({evenement, handlePress}: EvenementProps) => {
                 resizeMode="contain"
                 className={"border-2"}
                 style={{width: 120, height: 125}}
-                source={evenement.image}
+                source={{ uri: evenement.image}}
             />
             <View className={"flex-col flex-1 ml-2"}>
                 <View className={"flex-row"}>

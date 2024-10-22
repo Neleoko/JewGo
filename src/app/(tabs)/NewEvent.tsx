@@ -14,7 +14,7 @@ import FlashMessage, {showMessage} from "react-native-flash-message";
 import {Categorie} from "../../components/Categorie";
 import {getCategories} from "../../firebase/query/categoriesService";
 import {SingleChoice} from "../../components/SingleChoice";
-import {newEvent} from "../../firebase/query/eventService";
+import {addImageToDB, newEvent} from "../../firebase/query/eventService";
 import {formateDate, formatTime} from "../../utils/dateUtils";
 import {Ionicons} from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
@@ -124,7 +124,6 @@ export default function NewEvent() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 6],
             quality: 1,
         });
 
@@ -132,7 +131,6 @@ export default function NewEvent() {
             setImage(result.assets[0].uri);
         }
     };
-    console.log(image);
     const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -143,60 +141,74 @@ export default function NewEvent() {
         }
     }, [image]);
 
-
         const setEvent = async () => {
-        if (registrationLink !== "") {
-            if (await isLinkValid(registrationLink) === false) {
+            if (registrationLink !== "") {
+                if (await isLinkValid(registrationLink) === false) {
+                    showMessage({
+                        message: "Le lien d'inscription n'est pas valide",
+                        type: "warning",
+                        autoHide: true,
+                        duration: 2000,
+                    });
+                    return;
+                }
+            }
+            if (!dateEvent || !title || !description || !publicSexe || !image) {
                 showMessage({
-                    message: "Le lien d'inscription n'est pas valide",
+                    message: "Veuillez remplir les champs obligatoires",
                     type: "warning",
                     autoHide: true,
                     duration: 2000,
                 });
                 return;
             }
-        }
-        if (!dateEvent || !title || !description || !publicSexe) {
-            showMessage({
-                message: "Veuillez remplir les champs obligatoires",
-                type: "warning",
-                autoHide: true,
-                duration: 2000,
-            });
-            return;
-        }
-        try {
-            const event = {
-                title: title,
-                nomAsso: nomAsso,
-                time: timeEvent,
-                image: image,
-                guest: guest,
-                description: description,
-                categories: selectedCategories,
-                paf: paf,
-                registrationLink: registrationLink,
-                publicSexe: publicSexe,
-                publicAgeMin: publicAgeMin,
-                publicAgeMax: publicAgeMax
-            }
-            await newEvent(dateEvent, event);
+            try {
+                let imageUrl = null
+                try {
+                    if (image) {
+                        imageUrl = await addImageToDB(image);
+                    }
+                } catch (e) {
+                    showMessage({
+                        message: "Une erreur est survenue lors de l'ajout de l'image",
+                        type: "danger",
+                        autoHide: true,
+                        duration: 2000,
+                    });
+                    return;
+                }
 
-            showMessage({
-                message: "Événement créé avec succès",
-                type: "success",
-                autoHide: true,
-                duration: 2000,
-            });
-        } catch (e) {
-            showMessage({
-                message: "Une erreur est survenue",
-                type: "danger",
-                autoHide: true,
-                duration: 2000,
-            })
+                const event = {
+                    title: title,
+                    nomAsso: nomAsso,
+                    time: timeEvent,
+                    image: imageUrl,
+                    guest: guest,
+                    description: description,
+                    categories: selectedCategories,
+                    paf: paf,
+                    registrationLink: registrationLink,
+                    publicSexe: publicSexe,
+                    publicAgeMin: publicAgeMin,
+                    publicAgeMax: publicAgeMax
+                }
+                await newEvent(dateEvent, event);
+
+                showMessage({
+                    message: "Événement créé avec succès",
+                    type: "success",
+                    autoHide: true,
+                    duration: 2000,
+                });
+            } catch (e) {
+                showMessage({
+                    message: "Une erreur est survenue",
+                    type: "danger",
+                    autoHide: true,
+                    duration: 2000,
+                })
+            }
         }
-    }
 
     return (
         <StatusBarColorContext.Provider value={statusContextValue}>
