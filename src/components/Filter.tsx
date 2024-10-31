@@ -1,13 +1,22 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Modal, Text, TouchableOpacity, View} from 'react-native';
 import {Entypo} from '@expo/vector-icons';
 import SliderBarAge from './SliderBarAge';
 import {Categorie} from "./Categorie";
 import {ThemeContext} from "../contexts/ThemeContext";
+import { getCategories } from '../firebase/query/categoriesService';
 
 export default function Filter({modalVisible, handleFilterButtonClick, setStatusBarColor}) {
     const themeContextValue = useContext(ThemeContext);
 
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const categories = await getCategories();
+            setCategories(categories);
+        }
+        fetchCategories();
+    }, []);
     const handleCategorySelect = (categoryTitle: string) => {
         console.log(categoryTitle);
     };
@@ -25,14 +34,16 @@ export default function Filter({modalVisible, handleFilterButtonClick, setStatus
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <Text className={`font-bold text-[${themeContextValue.textColor}] text-lg`}>Catégorie :</Text>
+                    <Text className={`font-bold text-[${themeContextValue.textColor}] text-xl`}>Catégorie :</Text>
                     <View className={"flex-row flex-wrap"}>
-                        <Categorie title={"Cours"} isClickable={true} onSelect={handleCategorySelect}/>
-                        <Categorie title={"Soirée"} isClickable={true} onSelect={handleCategorySelect}/>
-                        <Categorie title={"Repas"} isClickable={true} onSelect={handleCategorySelect}/>
-                        <Categorie title={"Sport"} isClickable={true} onSelect={handleCategorySelect}/>
-                        <Categorie title={"Culture"} isClickable={true} onSelect={handleCategorySelect}/>
-                        <Categorie title={"Chabbat"} isClickable={true} onSelect={handleCategorySelect}/>
+                        {categories.map((category) => (
+                            <Categorie
+                                key={category}
+                                title={category}
+                                isClickable={true}
+                                onSelect={handleCategorySelect}
+                            />
+                        ))}
                     </View>
                 </View>
                 <SliderBarAge onValuesChange={(values) => console.log(values)}/>

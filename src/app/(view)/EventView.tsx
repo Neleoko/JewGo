@@ -14,12 +14,11 @@ import React, {useContext, useEffect, useState} from "react";
 import {ThemeContext} from "../../contexts/ThemeContext";
 import {getEventByDateAndId} from "../../firebase/query/eventService";
 import {StatusBar} from "expo-status-bar";
-import {Entypo, Ionicons} from "@expo/vector-icons";
+import {AntDesign, Entypo, Ionicons} from "@expo/vector-icons";
 import {Categorie} from "../../components/Categorie";
 import Markdown from "react-native-markdown-display";
 import {ButtonCustom} from "../../components/ButtonCustom";
-import * as events from "node:events";
-import {EventData} from "../../interfaces/EventData";
+import {EventInterface} from "../../interfaces/EventInterface";
 import {formateDate} from "../../utils/dateUtils";
 import characterUtils from "../../utils/characterUtils";
 
@@ -31,7 +30,7 @@ export default function NewEvent() {
     const navigation = useNavigation();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [eventData, setEventData] = useState<EventData | null>(null);
+    const [eventData, setEventData] = useState<EventInterface | null>(null);
 
     const themeContextValue = useContext(ThemeContext);
 
@@ -50,7 +49,7 @@ export default function NewEvent() {
         const fetchEvent = async () => {
             setIsLoading(true);
             const event = await getEventByDateAndId(date, id)
-            setEventData(event as EventData)
+            setEventData(event as EventInterface)
             setIsLoading(false)
         };
         fetchEvent();
@@ -60,8 +59,8 @@ export default function NewEvent() {
         <ThemeContext.Provider value={themeContextValue}>
             <SafeAreaView className={"flex-1"}>
                 <StatusBar backgroundColor={"#F4F4F9"} style={"dark"}/>
-                    <ScrollView style={{backgroundColor: themeContextValue.primaryColor}}>
-                        <View style={{borderColor: "#08238550"}} className={"justify-center m-5 rounded-lg bg-white p-3 flex-col border-2"}>
+                <ScrollView style={{backgroundColor: themeContextValue.primaryColor}}>
+                    <View style={{borderColor: "#08238550"}} className={"justify-center m-5 rounded-lg bg-white p-3 flex-col border-2 min-h-fit"}>
                         {isLoading || !eventData ? (
                             <View className={"flex-1 justify-center items-center "}>
                                 <ActivityIndicator size="large" color="#0000ff" />
@@ -75,7 +74,10 @@ export default function NewEvent() {
                                         }}>
                                         <Ionicons name="arrow-back-outline" size={30} color="black"/>
                                     </TouchableOpacity>
-                                    <Entypo name="share" size={24} color="black" onPress={onShare}/>
+                                    <View className={"flex-row"}>
+                                        <AntDesign name="edit" size={24} color="black" style={{paddingRight:10}} onPress={onShare}/>
+                                        <Entypo name="share" size={24} color="black" onPress={onShare}/>
+                                    </View>
                                 </View>
                                 <View className={"items-center mb-5"}>
                                     <Text className={"text-4xl font-bold text-center mb-1"}>{eventData.title}</Text>
@@ -84,27 +86,36 @@ export default function NewEvent() {
                                     {eventData.guest && (<Text className={"text-3xl text-center"}>{eventData.guest}</Text>)}
                                 </View>
                                 {/*<View className={"items-center"}>*/}
-                                    <View className={'bg-white h-80 mx-6 justify-center items-center'}>
-                                        <ImageBackground
-                                            source={{ uri: eventData.image }}
-                                            className="w-full h-full justify-center content-center rounded-lg"
-                                            imageStyle={{borderRadius: 5}}
-                                            blurRadius={10}
-                                        >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{uri: eventData.image}}
-                                                className="w-full h-full rounded-lg border-black"
-                                            />
-                                        </ImageBackground>
-                                    </View>
-                                {/*</View>*/}
-                                <View className={"flex-row flex-wrap justify-center"}>
-                                    {eventData.categories.map((category) => (
-                                        <Categorie
-                                            key={category}
-                                            title={category}
+                                <View className={'bg-white h-80 mx-6 justify-center items-center'}>
+                                    <ImageBackground
+                                        source={{ uri: eventData.image }}
+                                        className="w-full h-full justify-center content-center rounded-lg"
+                                        imageStyle={{borderRadius: 5}}
+                                        blurRadius={10}
+                                    >
+                                        <Image
+                                            resizeMode="contain"
+                                            source={{uri: eventData.image}}
+                                            className="w-full h-full rounded-lg border-black"
                                         />
+                                    </ImageBackground>
+                                </View>
+                                {/*</View>*/}
+                                <View className={"flex-row flex-wrap justify-center mt-4"}>
+                                    {eventData.categories.map((category) => (
+                                        <View
+                                            className={`rounded-2xl mx-1 mt-3 items-center`}
+                                            style={{
+                                                backgroundColor: 'rgba(214,238,255,0.76)',
+                                            }}
+                                            key={category}
+                                        >
+                                            <Text className={`px-4 py-1`}>{category}</Text>
+                                        </View>
+                                        // <Categorie
+                                        //     key={category}
+                                        //     title={category}
+                                        // />
                                     ))}
                                 </View>
                                 <View className={"m-4"}>
@@ -130,11 +141,13 @@ export default function NewEvent() {
                                         </Text>
                                     </View>
                                 </View>
-                                {/*<View className={"pb-20"}/>*/}
+                                {eventData.registrationLink && (
+                                    <View className={"pb-20"}/>
+                                )}
                             </>
                         )}
-                        </View>
-                    </ScrollView>
+                    </View>
+                </ScrollView>
                 {isLoading || !eventData ? (
                     <View />
                 ) : (

@@ -42,7 +42,7 @@ export default function SearchBar() {
     };
 
     return (
-        <View className={"flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md shadow-black border-2"} style={{borderColor: themeContextValue.secondaryColor}}>
+        <View className={"flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md shadow-black"} >
             <TouchableOpacity className={"mr-2"}>
                 <Ionicons name="search" size={24} color="black" />
             </TouchableOpacity>

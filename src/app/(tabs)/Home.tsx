@@ -62,7 +62,12 @@ export default function Home() {
                     >
                         <View className={"flex-1 justify-center m-5"}>
                             <View className={"items-center mb-1"}>
-                                <SwitchSelector options={optionsButton} buttonColor={themeContextValue.secondaryColor} initial={0} />
+                                <SwitchSelector
+                                    options={optionsButton}
+                                    buttonColor={themeContextValue.secondaryColor}
+                                    initial={0}
+                                    selectedTextStyle={{ fontWeight: 'bold' }}
+                                />
                             </View>
                             <SearchBar />
                             {isLoading? (

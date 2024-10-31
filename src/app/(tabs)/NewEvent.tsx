@@ -306,7 +306,7 @@ export default function NewEvent() {
                         isMultiline={false}
                         isRequired={true}
                         placeHolder={"Cours de ... / Voyage en Italie"}
-                        isNumeric={false}
+                        keyboardType={"default"}
                     />
                     <InputCustom
                         onInputChange={(value: React.SetStateAction<string>) => setGuest(value)}
@@ -314,7 +314,7 @@ export default function NewEvent() {
                         isMultiline={false}
                         isRequired={false}
                         placeHolder={"Nom de l'invité"}
-                        isNumeric={false}
+                        keyboardType={"default"}
                     />
                     <InputCustom
                         // onInputChange={(value: React.SetStateAction<string>) =>setDescription(description.replace(/\n/g, '\\n'))}
@@ -323,7 +323,7 @@ export default function NewEvent() {
                         isMultiline={true}
                         isRequired={true}
                         placeHolder={"Événement qui consiste a..."}
-                        isNumeric={false}
+                        keyboardType={"default"}
                     />
                     <View className={"mb-2"}>
                         <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie</Text>
@@ -362,7 +362,7 @@ export default function NewEvent() {
                             isMultiline={false}
                             isRequired={false}
                             placeHolder={"00"}
-                            isNumeric={true}
+                            keyboardType={"numeric"}
                         />
                     </View>
                     <InputCustom
@@ -371,7 +371,7 @@ export default function NewEvent() {
                         isMultiline={false}
                         isRequired={false}
                         placeHolder={"https://..."}
-                        isNumeric={false}
+                        keyboardType={"url"}
                     />
                     {!isKeyboardVisible && (
                         <View style={{ height: 110 }} />

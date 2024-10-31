@@ -12,7 +12,7 @@ export const ButtonCustom = ({title, handlePress, styleNativeWind}: ButtonProps)
     const themeContextValue = useContext(ThemeContext);
     return (
         <TouchableOpacity
-            className={`justify-center items-center rounded-md py-5 shadow-xl shadow-black ${styleNativeWind}`}
+            className={`justify-center items-center rounded-md py-2 shadow-xl shadow-black ${styleNativeWind}`}
             style={{backgroundColor: themeContextValue.secondaryColor, paddingHorizontal: 115}}
             onPress={handlePress}
         >

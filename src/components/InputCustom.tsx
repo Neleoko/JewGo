@@ -3,7 +3,7 @@ import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from "../contexts/ThemeContext";
 import {Entypo} from "@expo/vector-icons";
 
-export default function InputCustom({ onInputChange, title, isMultiline, placeHolder, isRequired, isNumeric }) {
+export default function InputCustom({ onInputChange, title, isMultiline, placeHolder, isRequired, keyboardType }) {
     const [inputValue, setInputValue] = useState('');
     const themeContextValue = useContext(ThemeContext);
 
@@ -19,14 +19,14 @@ export default function InputCustom({ onInputChange, title, isMultiline, placeHo
                 {isRequired && <Text style={{color: 'red'}}> *</Text>}
             </View>
             <View className={`flex border-2 rounded-lg py-2 px-3`} style={{borderColor: themeContextValue.secondaryColor}}>
-                {isNumeric ? (
+                {keyboardType == "numeric" ? (
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <TextInput
                             value={inputValue}
                             onChangeText={handleInputChange}
                             multiline={isMultiline}
                             placeholder={placeHolder}
-                            keyboardType="numeric" // Affiche un clavier numérique
+                            keyboardType={keyboardType}
                         />
                         <Text>€</Text>
                     </View>
@@ -36,6 +36,8 @@ export default function InputCustom({ onInputChange, title, isMultiline, placeHo
                         onChangeText={handleInputChange}
                         multiline={isMultiline}
                         placeholder={placeHolder}
+                        keyboardType={keyboardType}
+                        secureTextEntry={keyboardType === "password"}
                     />
                 )}
             </View>
