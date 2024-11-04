@@ -20,7 +20,7 @@ export default function App() {
 
                 source={require('../assets/images/x-logo.png')}
             />
-            <Text className={`text-6xl m-9 p-1 text-center text-[${themeContextValue.textColor}]`}>JEvents</Text>
+            <Text className={`text-6xl m-9 p-1 text-center text-[${themeContextValue.textColor}]`}>JewGo</Text>
 
             <View className={"my-8"}>
                 <ButtonCustom

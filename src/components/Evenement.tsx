@@ -21,8 +21,7 @@ export type EvenementProps = {
 export const Evenement = ({evenement, handlePress}: EvenementProps) => {
     return (
         <TouchableOpacity
-            className={"flex-1 flex-row items-center my-2 p-3 bg-white rounded-lg"}
-            style={{elevation: 5}}
+            className={"flex-1 flex-row items-center my-2 p-3 bg-white rounded-lg shadow-md"}
             activeOpacity={0.8}
             onPress={handlePress}
         >
