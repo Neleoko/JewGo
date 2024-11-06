@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "JEvents",
-    "slug": "jevents",
+    "name": "JewGo",
+    "slug": "jewgo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.neleoko.jevents"
+      "package": "com.neleoko.jewgo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,7 +30,7 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "jevents",
+    "scheme": "jewgo",
     "extra": {
       "router": {
         "origin": false
