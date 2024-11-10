@@ -1,4 +1,4 @@
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {ButtonCustom} from "../components/ButtonCustom";
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
@@ -146,7 +146,7 @@ export default function App() {
                     onPress={() => router.push('/Home')}
                 >
                     <View className={"mr-5"}>
-                        <AntDesign name="google" size={24} color="#4285F4"/>
+                        <Image source={require('../assets/images/google-logo.png')} style={{ width: 28, height: 28 }} />
                     </View>
                     <Text className={"text-lg text-black"}>Connexion avec Google</Text>
                 </TouchableOpacity>

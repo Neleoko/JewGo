@@ -247,24 +247,6 @@ export default function NewEvent() {
                             <AntDesign name="pluscircleo" size={30} color="black"/>
                         )}
                     </TouchableOpacity>
-
-                    {/*<TouchableOpacity*/}
-                    {/*    className={"bg-white h-80 mx-8 my-5 border-2 rounded-lg justify-center items-center"}*/}
-                    {/*    style={{borderColor: themeContextValue.secondaryColor}}*/}
-                    {/*>*/}
-                    {/*    /!*{*!/*/}
-                    {/*    /!*    image ? (*!/*/}
-                    {/*        <Image*/}
-                    {/*            resizeMode={"contain"}*/}
-                    {/*            source={require('../../assets/images/fleg.jpg')}*/}
-                    {/*            style={{ width: '100%',height:'100%', maxHeight: 300 }}*/}
-                    {/*        />*/}
-                    {/*        /!*) : (*!/*/}
-                    {/*        /!*    <AntDesign name="pluscircleo" size={30} color="black"/>*!/*/}
-                    {/*        /!*)*!/*/}
-                    {/*    /!*}*!/*/}
-
-                    {/*</TouchableOpacity>*/}
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
