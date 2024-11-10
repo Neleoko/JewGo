@@ -307,6 +307,7 @@ export default function NewEvent() {
                         isRequired={true}
                         placeHolder={"Cours de ... / Voyage en Italie"}
                         keyboardType={"default"}
+                        icon={""}
                     />
                     <InputCustom
                         onInputChange={(value: React.SetStateAction<string>) => setGuest(value)}
@@ -315,6 +316,7 @@ export default function NewEvent() {
                         isRequired={false}
                         placeHolder={"Nom de l'invité"}
                         keyboardType={"default"}
+                        icon={""}
                     />
                     <InputCustom
                         // onInputChange={(value: React.SetStateAction<string>) =>setDescription(description.replace(/\n/g, '\\n'))}
@@ -324,6 +326,7 @@ export default function NewEvent() {
                         isRequired={true}
                         placeHolder={"Événement qui consiste a..."}
                         keyboardType={"default"}
+                        icon={""}
                     />
                     <View className={"mb-2"}>
                         <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie</Text>
@@ -363,6 +366,7 @@ export default function NewEvent() {
                             isRequired={false}
                             placeHolder={"00"}
                             keyboardType={"numeric"}
+                            icon={""}
                         />
                     </View>
                     <InputCustom
@@ -372,6 +376,7 @@ export default function NewEvent() {
                         isRequired={false}
                         placeHolder={"https://..."}
                         keyboardType={"url"}
+                        icon={""}
                     />
                     {!isKeyboardVisible && (
                         <View style={{ height: 110 }} />
@@ -379,7 +384,7 @@ export default function NewEvent() {
                 </ScrollView>
                 {!isKeyboardVisible && (
                     <View className={"absolute bottom-0 items-center w-full mb-8"}>
-                        <ButtonCustom title={"Créer"} handlePress={setEvent}/>
+                        <ButtonCustom title={"Créer"} handlePress={setEvent} styleNativeWind={"px-32 py-4"}/>
                     </View>
                 )}
                 <FlashMessage position="top" />

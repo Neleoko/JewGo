@@ -153,9 +153,10 @@ export default function NewEvent() {
                 ) : (
                     eventData && eventData.registrationLink ? (
                         <View className={"absolute bottom-0 w-full items-center mb-12"}>
-                            <ButtonCustom title={'S\'inscrire'} handlePress={async () => {
-                                await Linking.openURL(eventData.registrationLink)
-                            }}/>
+                            <ButtonCustom title={'S\'inscrire'} styleNativeWind={"px-32 py-4"}
+                                          handlePress={async () => {
+                                              await Linking.openURL(eventData.registrationLink)
+                                          }}/>
                         </View>
                     ) : null
                 )}
