@@ -4,7 +4,7 @@ import {Entypo} from '@expo/vector-icons';
 import SliderBarAge from './SliderBarAge';
 import {Categorie} from "./Categorie";
 import {ThemeContext} from "../contexts/ThemeContext";
-import { getCategories } from '../firebase/query/categoriesService';
+import {getCategories} from '../firebase/query/categoriesService';
 
 export default function Filter({modalVisible, handleFilterButtonClick, setStatusBarColor}) {
     const themeContextValue = useContext(ThemeContext);

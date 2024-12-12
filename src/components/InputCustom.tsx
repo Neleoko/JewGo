@@ -5,7 +5,7 @@ import {Entypo} from "@expo/vector-icons";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 
-export default function InputCustom({ onInputChange, title, isMultiline, placeHolder, isRequired, keyboardType, icon }) {
+export default function InputCustom({onInputChange, title, isMultiline, placeHolder, isRequired, keyboardType, icon}) {
     const [inputValue, setInputValue] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -21,10 +21,12 @@ export default function InputCustom({ onInputChange, title, isMultiline, placeHo
     return (
         <View className={"mb-2"}>
             <View className={"mb-1 flex-row"}>
-                <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>{title}</Text>
+                <Text className={`text-lg font-medium`}
+                      style={{color: themeContextValue.textColor}}>{title}</Text>
                 {isRequired && <Text style={{color: 'red'}}> *</Text>}
             </View>
-            <View className={`flex border-2 rounded-lg py-2 px-3`} style={{borderColor: themeContextValue.secondaryColor}}>
+            <View className={`flex border-2 rounded-lg py-1/2 px-1`}
+                  style={{borderColor: themeContextValue.secondaryColor}}>
                 {keyboardType == "numeric" ? (
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <TextInput
@@ -38,12 +40,12 @@ export default function InputCustom({ onInputChange, title, isMultiline, placeHo
                     </View>
                 ) : (
                     <View className={"flex-row"}>
-                        <View className={"mr-3 justify-center"}>
+                        <View className={"mx-2 justify-center"}>
                             {icon === "mail" && (
-                                <Octicons name="mail" size={20} color={`${themeContextValue.secondaryColor}`} />
+                                <Octicons name="mail" size={20} color={`${themeContextValue.secondaryColor}`}/>
                             )}
                             {icon === "lock" && (
-                                <MaterialIcons name="lock" size={20} color={`${themeContextValue.secondaryColor}`} />
+                                <MaterialIcons name="lock" size={20} color={`${themeContextValue.secondaryColor}`}/>
                             )}
                         </View>
                         <TextInput
@@ -53,16 +55,15 @@ export default function InputCustom({ onInputChange, title, isMultiline, placeHo
                             placeholder={placeHolder}
                             keyboardType={keyboardType}
                             secureTextEntry={keyboardType === "password" && !isPasswordVisible}
-                            style={{ flex: 1 }}
+                            style={{flex: 1}}
                         />
                         {keyboardType === "password" && (
-                            <TouchableOpacity className={"justify-center "} onPress={togglePasswordVisibility}>
-                                <Entypo name={isPasswordVisible ? "eye" : "eye-with-line"} size={20} color={`rgba(0, 0, 0, 0.53)`} />
+                            <TouchableOpacity className={"justify-center mx-2"} onPress={togglePasswordVisibility}>
+                                <Entypo name={isPasswordVisible ? "eye" : "eye-with-line"} size={20}
+                                        color={`rgba(0, 0, 0, 0.53)`}/>
                             </TouchableOpacity>
                         )}
-
                     </View>
-
                 )}
             </View>
         </View>

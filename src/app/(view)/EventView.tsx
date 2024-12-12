@@ -15,7 +15,6 @@ import {ThemeContext} from "../../contexts/ThemeContext";
 import {getEventByDateAndId} from "../../firebase/query/eventService";
 import {StatusBar} from "expo-status-bar";
 import {AntDesign, Entypo, Ionicons} from "@expo/vector-icons";
-import {Categorie} from "../../components/Categorie";
 import Markdown from "react-native-markdown-display";
 import {ButtonCustom} from "../../components/ButtonCustom";
 import {EventInterface} from "../../interfaces/EventInterface";
@@ -60,10 +59,11 @@ export default function NewEvent() {
             <SafeAreaView className={"flex-1"}>
                 <StatusBar backgroundColor={"#F4F4F9"} style={"dark"}/>
                 <ScrollView style={{backgroundColor: themeContextValue.primaryColor}}>
-                    <View style={{borderColor: "#08238550"}} className={"justify-center m-5 rounded-lg bg-white p-3 flex-col border-2 min-h-fit"}>
+                    <View style={{borderColor: "#08238550"}}
+                          className={"justify-center m-5 rounded-lg bg-white p-3 flex-col border-2 min-h-fit"}>
                         {isLoading || !eventData ? (
                             <View className={"flex-1 justify-center items-center "}>
-                                <ActivityIndicator size="large" color="#0000ff" />
+                                <ActivityIndicator size="large" color="#0000ff"/>
                             </View>
                         ) : (
                             <>
@@ -75,20 +75,24 @@ export default function NewEvent() {
                                         <Ionicons name="arrow-back-outline" size={30} color="black"/>
                                     </TouchableOpacity>
                                     <View className={"flex-row"}>
-                                        <AntDesign name="edit" size={24} color="black" style={{paddingRight:10}} onPress={onShare}/>
+                                        <AntDesign name="edit" size={24} color="black" style={{paddingRight: 10}}
+                                                   onPress={onShare}/>
                                         <Entypo name="share" size={24} color="black" onPress={onShare}/>
                                     </View>
                                 </View>
                                 <View className={"items-center mb-5"}>
-                                    <Text className={"text-4xl font-bold text-center mb-1"}>{eventData.title}</Text>
-                                    <Text className={"text-3xl font-bold text-center"}>{characterUtils(formateDate(date))}</Text>
-                                    {eventData.time && (<Text className={"text-3xl text-center"}>{eventData.time}</Text>)}
-                                    {eventData.guest && (<Text className={"text-3xl text-center"}>{eventData.guest}</Text>)}
+                                    <Text className={"text-4xl font-bold text-center mb-1"}
+                                          style={{color: themeContextValue.textColor}}>{eventData.title}</Text>
+                                    <Text className={"text-3xl font-bold text-center"}
+                                          style={{color: themeContextValue.textColor}}>{characterUtils(formateDate(date))}</Text>
+                                    {eventData.time && (<Text className={"text-3xl text-center"}
+                                                              style={{color: themeContextValue.textColor}}>{eventData.time}</Text>)}
+                                    {eventData.guest && (<Text className={"text-3xl text-center"}
+                                                               style={{color: themeContextValue.textColor}}>{eventData.guest}</Text>)}
                                 </View>
-                                {/*<View className={"items-center"}>*/}
                                 <View className={'bg-white h-80 mx-6 justify-center items-center'}>
                                     <ImageBackground
-                                        source={{ uri: eventData.image }}
+                                        source={{uri: eventData.image}}
                                         className="w-full h-full justify-center content-center rounded-lg"
                                         imageStyle={{borderRadius: 5}}
                                         blurRadius={10}
@@ -100,7 +104,6 @@ export default function NewEvent() {
                                         />
                                     </ImageBackground>
                                 </View>
-                                {/*</View>*/}
                                 <View className={"flex-row flex-wrap justify-center mt-4"}>
                                     {eventData.categories.map((category) => (
                                         <View
@@ -110,32 +113,30 @@ export default function NewEvent() {
                                             }}
                                             key={category}
                                         >
-                                            <Text className={`px-4 py-1`}>{category}</Text>
+                                            <Text className={`px-4 py-1`}
+                                                  style={{color: themeContextValue.textColor}}>{category}</Text>
                                         </View>
-                                        // <Categorie
-                                        //     key={category}
-                                        //     title={category}
-                                        // />
                                     ))}
                                 </View>
                                 <View className={"m-4"}>
-                                    <Markdown style={{body: {fontSize: 18}}}>
+                                    <Markdown style={{body: {fontSize: 18, color: themeContextValue.textColor}}}>
                                         {eventData.description}
                                     </Markdown>
                                     <View>
-                                        <Text className={"text-lg mb-2"}>
+                                        <Text className={"text-lg mb-2"} style={{color: themeContextValue.textColor}}>
                                             Age moyen : {eventData.publicAgeMin} - {eventData.publicAgeMax} ans
                                         </Text>
                                     </View>
                                     <View>
-                                        <Text className={"text-lg mb-2"}>
+                                        <Text className={"text-lg mb-2"} style={{color: themeContextValue.textColor}}>
                                             Public : {eventData.publicSexe}
                                         </Text>
                                     </View>
                                     <View>
-                                        <Text className={"text-lg mb-2"}>
+                                        <Text className={"text-lg mb-2"} style={{color: themeContextValue.textColor}}>
                                             Lieu :{" "}
-                                            <Text className={"text-lg mb-2 text-blue-800"} onPress={linkMaps}>
+                                            <Text className={"text-lg mb-2 text-blue-800"} onPress={linkMaps}
+                                                  style={{color: themeContextValue.textColor}}>
                                                 3 rue de la paix 75000 Paris
                                             </Text>
                                         </Text>
@@ -149,7 +150,7 @@ export default function NewEvent() {
                     </View>
                 </ScrollView>
                 {isLoading || !eventData ? (
-                    <View />
+                    <View/>
                 ) : (
                     eventData && eventData.registrationLink ? (
                         <View className={"absolute bottom-0 w-full items-center mb-12"}>

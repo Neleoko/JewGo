@@ -9,7 +9,8 @@ import {StatusBarColorContext} from "../contexts/StatusBarColorContext";
 import {router} from "expo-router";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
-import { firebaseAuth } from '../firebase/firebase';
+import {firebaseAuth} from '../firebase/firebase';
+import {checkUserExist} from "../firebase/query/userService";
 
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
@@ -37,30 +40,39 @@ export default function App() {
     // Connexion
     const handleSignIn = async () => {
         try {
-            await signInWithEmailAndPassword(firebaseAuth, email, password);
-            showMessage({
-                message: "Connexion réussie",
-                type: "success",
-            });
-            router.push('/Home');
+            setIsLoading(true)
+            const userAuth = await signInWithEmailAndPassword(firebaseAuth, email, password);
+            if (await checkUserExist(userAuth.user.uid)) {
+                router.push('/Home');
+            } else {
+                router.push('/CreateProfile');
+            }
+
         } catch (error) {
             console.log(error);
             const errorMessage = getErrorMessage(error.code);
             showMessage({
                 message: errorMessage,
                 type: "danger",
-            });
+            })
+        } finally {
+            setIsLoading(false)
         }
     };
 
     // Inscription
     const handleSignUp = async () => {
         try {
-            await createUserWithEmailAndPassword(firebaseAuth, email, password);
+            setIsLoading(true)
+            const authUser = await createUserWithEmailAndPassword(firebaseAuth, email, password);
             showMessage({
                 message: "Utilisateur créé avec succès",
                 type: "success",
             });
+
+            setLoginMode(true)
+            setIsLoading(false)
+
         } catch (error) {
             console.log(error);
             const errorMessage = getErrorMessage(error.code);
@@ -68,6 +80,7 @@ export default function App() {
                 message: errorMessage,
                 type: "danger",
             });
+            setIsLoading(false)
         }
     };
 
@@ -123,16 +136,18 @@ export default function App() {
                                 oublié ?</Text>
                         </TouchableOpacity>
 
-                        <ButtonCustom title={"Se connecter"} styleNativeWind={"py-2.5 mx-4 "} handlePress={() => {
-                            handleSignIn()
-                        }}/>
+                        <ButtonCustom title={"Se connecter"} styleNativeWind={"py-2.5 mx-4 "} isLoading={isLoading}
+                                      handlePress={() => {
+                                          handleSignIn()
+                                      }}/>
                     </>
-                ) : (
+                ) : ( // Inscription
                     <>
                         <View className={"mb-24"}/>
-                        <ButtonCustom title={"S'inscrire"} styleNativeWind={"py-2.5 mx-4 "} handlePress={() => {
-                            handleSignUp()
-                        }}/>
+                        <ButtonCustom title={"S'inscrire"} styleNativeWind={"py-2.5 mx-4 "} isLoading={isLoading}
+                                      handlePress={() => {
+                                          handleSignUp()
+                                      }}/>
                     </>
                 )}
                 <View className={"flex-row items-center my-5 mx-12"}>
@@ -146,7 +161,7 @@ export default function App() {
                     onPress={() => router.push('/Home')}
                 >
                     <View className={"mr-5"}>
-                        <Image source={require('../assets/images/google-logo.png')} style={{ width: 28, height: 28 }} />
+                        <Image source={require('../assets/images/google-logo.png')} style={{width: 28, height: 28}}/>
                     </View>
                     <Text className={"text-lg text-black"}>Connexion avec Google</Text>
                 </TouchableOpacity>

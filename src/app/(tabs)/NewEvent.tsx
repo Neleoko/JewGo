@@ -6,7 +6,7 @@ import InputCustom from "../../components/InputCustom";
 import {ButtonCustom} from "../../components/ButtonCustom";
 import DatePickerNeat from 'react-native-neat-date-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 import characterUtils from "../../utils/characterUtils";
 import {ThemeContext} from "../../contexts/ThemeContext";
 import SliderBarAge from "../../components/SliderBarAge";
@@ -17,7 +17,7 @@ import {SingleChoice} from "../../components/SingleChoice";
 import {addImageToDB, newEvent} from "../../firebase/query/eventService";
 import {formateDate, formatTime} from "../../utils/dateUtils";
 import {Ionicons} from "@expo/vector-icons";
-import { AntDesign } from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from "@react-navigation/native";
 import isLinkValid from "../../utils/linkUtils";
 import * as ImagePicker from 'expo-image-picker';
@@ -85,7 +85,7 @@ export default function NewEvent() {
         }
     };
     // Style
-    const styleText = "text-xl font-medium text-black";
+    const styleText = "text-lg font-medium text-black";
 
     // Calendar
     const [showDatePickerSingle, setShowDatePickerSingle] = useState(false)
@@ -122,7 +122,7 @@ export default function NewEvent() {
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ['images'],
             allowsEditing: true,
             quality: 1,
         });
@@ -131,84 +131,84 @@ export default function NewEvent() {
             setImage(result.assets[0].uri);
         }
     };
-    const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+    const [imageDimensions, setImageDimensions] = useState({width: 0, height: 0});
 
     useEffect(() => {
         if (image) {
             Image.getSize(image, (width, height) => {
-                setImageDimensions({ width, height });
+                setImageDimensions({width, height});
             });
         }
     }, [image]);
 
-        const setEvent = async () => {
-            if (registrationLink !== "") {
-                if (await isLinkValid(registrationLink) === false) {
-                    showMessage({
-                        message: "Le lien d'inscription n'est pas valide",
-                        type: "warning",
-                        autoHide: true,
-                        duration: 2000,
-                    });
-                    return;
-                }
-            }
-            if (!dateEvent || !title || !description || !publicSexe || !image) {
+    const setEvent = async () => {
+        if (registrationLink !== "") {
+            if (await isLinkValid(registrationLink) === false) {
                 showMessage({
-                    message: "Veuillez remplir les champs obligatoires",
+                    message: "Le lien d'inscription n'est pas valide",
                     type: "warning",
                     autoHide: true,
                     duration: 2000,
                 });
                 return;
             }
+        }
+        if (!dateEvent || !title || !description || !publicSexe || !image) {
+            showMessage({
+                message: "Veuillez remplir les champs obligatoires",
+                type: "warning",
+                autoHide: true,
+                duration: 2000,
+            });
+            return;
+        }
+        try {
+            let imageUrl = null
             try {
-                let imageUrl = null
-                try {
-                    if (image) {
-                        imageUrl = await addImageToDB(image);
-                    }
-                } catch (e) {
-                    showMessage({
-                        message: "Une erreur est survenue lors de l'ajout de l'image",
-                        type: "danger",
-                        autoHide: true,
-                        duration: 2000,
-                    });
-                    return;
+                if (image) {
+                    imageUrl = await addImageToDB(image);
                 }
-
-                const event = {
-                    title: title,
-                    nomAsso: nomAsso,
-                    time: timeEvent,
-                    image: imageUrl,
-                    guest: guest,
-                    description: description,
-                    categories: selectedCategories,
-                    paf: paf,
-                    registrationLink: registrationLink,
-                    publicSexe: publicSexe,
-                    publicAgeMin: publicAgeMin,
-                    publicAgeMax: publicAgeMax
-                }
-                await newEvent(dateEvent, event);
-
-                showMessage({
-                    message: "Événement créé avec succès",
-                    type: "success",
-                    autoHide: true,
-                    duration: 2000,
-                });
             } catch (e) {
                 showMessage({
-                    message: "Une erreur est survenue",
+                    message: "Une erreur est survenue lors de l'ajout de l'image",
                     type: "danger",
                     autoHide: true,
                     duration: 2000,
-                })
+                });
+                return;
             }
+
+            const event = {
+                title: title,
+                nomAsso: nomAsso,
+                time: timeEvent,
+                image: imageUrl,
+                guest: guest,
+                description: description,
+                categories: selectedCategories,
+                paf: paf,
+                registrationLink: registrationLink,
+                publicSexe: publicSexe,
+                publicAgeMin: publicAgeMin,
+                publicAgeMax: publicAgeMax
+            }
+            await newEvent(dateEvent, event);
+
+            showMessage({
+                message: "Événement créé avec succès",
+                type: "success",
+                autoHide: true,
+                duration: 2000,
+            });
+        } catch (e) {
+            showMessage({
+                message: "Une erreur est survenue",
+                type: "danger",
+                autoHide: true,
+                duration: 2000,
+            })
         }
+    }
 
     return (
         <StatusBarColorContext.Provider value={statusContextValue}>
@@ -221,8 +221,9 @@ export default function NewEvent() {
                         }}>
                         <Ionicons name="arrow-back-outline" size={30} color="black"/>
                     </TouchableOpacity>
-                    <Text className={"text-2xl font-bold"}>Créer un événement</Text>
-                    <View />
+                    <Text className={"text-2xl font-bold"} style={{color: themeContextValue.textColor}}>Créer un
+                        événement</Text>
+                    <View/>
                 </View>
                 <ScrollView className={`flex-1 mx-5`} showsVerticalScrollIndicator={false}>
 
@@ -232,7 +233,7 @@ export default function NewEvent() {
                     >
                         {image ? (
                             <ImageBackground
-                                source={{ uri: image }}
+                                source={{uri: image}}
                                 className="w-full h-full justify-center content-center rounded-lg"
                                 imageStyle={{borderRadius: 5}}
                                 blurRadius={10}
@@ -249,8 +250,8 @@ export default function NewEvent() {
                     </TouchableOpacity>
                     <View className={"flex-row justify-between mb-3"}>
                         <View>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text className={styleText}>Date</Text>
+                            <View className={"mb-1 flex-row items-center"}>
+                                <Text className={styleText} style={{color: themeContextValue.textColor}}>Date</Text>
                                 <Text style={{color: 'red'}}> *</Text>
                             </View>
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
@@ -266,10 +267,13 @@ export default function NewEvent() {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <Text className={styleText}>À</Text>
+                            <View className={"mb-1"}>
+                                <Text className={styleText} style={{color: themeContextValue.textColor}}>À</Text>
+                            </View>
+
                             <TouchableOpacity className={`flex border-2 rounded-lg py-2 px-3`}
                                               style={{borderColor: themeContextValue.secondaryColor}}
-                                                onPress={() => setShowTimePicker(true)}
+                                              onPress={() => setShowTimePicker(true)}
                             >
                                 <Text className={"text-md"}>
                                     {timeEvent ?
@@ -311,7 +315,7 @@ export default function NewEvent() {
                         icon={""}
                     />
                     <View className={"mb-2"}>
-                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Catégorie</Text>
+                        <Text className={styleText} style={{color: themeContextValue.textColor}}>Catégorie</Text>
                         <View className={"flex-row flex-wrap"}>
                             {categories.map((category) => (
                                 <Categorie
@@ -324,18 +328,27 @@ export default function NewEvent() {
                         </View>
                     </View>
                     <View className={"mb-1 flex-row"}>
-                        <Text className={`text-xl font-medium text-[${themeContextValue.textColor}]`}>Public</Text>
+                        <Text className={styleText} style={{color: themeContextValue.textColor}}>Public</Text>
                         <Text style={{color: 'red'}}> *</Text>
                     </View>
                     <View className={"mb-2 flex-row"}>
-                        <SingleChoice title={"Mixte"} isClickable={true} isSelected={publicSexe === 'Mixte'} onSelect={() => { setPublicSexe('Mixte')}}/>
-                        <SingleChoice title={"Femme"} isClickable={true} isSelected={publicSexe === 'Femme'} onSelect={() => { setPublicSexe('Femme')}}/>
-                        <SingleChoice title={"Homme"} isClickable={true} isSelected={publicSexe === 'Homme'} onSelect={() => { setPublicSexe('Homme')}}/>
+                        <SingleChoice title={"Mixte"} isClickable={true} isSelected={publicSexe === 'Mixte'}
+                                      onSelect={() => {
+                                          setPublicSexe('Mixte')
+                                      }}/>
+                        <SingleChoice title={"Femme"} isClickable={true} isSelected={publicSexe === 'Femme'}
+                                      onSelect={() => {
+                                          setPublicSexe('Femme')
+                                      }}/>
+                        <SingleChoice title={"Homme"} isClickable={true} isSelected={publicSexe === 'Homme'}
+                                      onSelect={() => {
+                                          setPublicSexe('Homme')
+                                      }}/>
                     </View>
                     <SliderBarAge
                         onValuesChange={(values) => {
-                        setPublicAgeMin(values[0]);
-                        setPublicAgeMax(values[1]);
+                            setPublicAgeMin(values[0]);
+                            setPublicAgeMax(values[1]);
                         }}
                         initialValueMin={18}
                         isRequired={true}
@@ -361,7 +374,7 @@ export default function NewEvent() {
                         icon={""}
                     />
                     {!isKeyboardVisible && (
-                        <View style={{ height: 110 }} />
+                        <View style={{height: 110}}/>
                     )}
                 </ScrollView>
                 {!isKeyboardVisible && (
@@ -369,7 +382,7 @@ export default function NewEvent() {
                         <ButtonCustom title={"Créer"} handlePress={setEvent} styleNativeWind={"px-32 py-4"}/>
                     </View>
                 )}
-                <FlashMessage position="top" />
+                <FlashMessage position="top"/>
                 <DatePickerNeat
                     isVisible={showDatePickerSingle}
                     mode={'single'}
@@ -383,7 +396,7 @@ export default function NewEvent() {
                         selectedDateBackgroundColor: themeContextValue.secondaryColor,
                         weekDaysColor: themeContextValue.secondaryColor
                     }}/>
-                { showTimePicker && (
+                {showTimePicker && (
                     <DateTimePicker
                         value={new Date()}
                         mode={'time'}
